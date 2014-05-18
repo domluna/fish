@@ -1,7 +1,12 @@
 package api
 
-const (
-    hostName string = "https://api.digitalocean/"
-    apiVersion string = "v1"
-    BaseURL string = hostName + apiVersion + "/"
+import (
+	"fmt"
 )
+
+var version = "v1"
+var hostname = "https://api.digitalocean.com"
+
+func formatURL(resource string) string {
+	return fmt.Sprintf("%s/%s/%s", hostname, version, resource)
+}
