@@ -4,13 +4,13 @@ package main
 import (
 	"log"
 
-	"github.com/Niessy/fisherman/api"
+	"github.com/Niessy/fisherman/api/v1"
 	"github.com/codegangsta/cli"
 )
 
 func auth(c *cli.Context) {
 	path := c.String("configFile")
-	err := api.LoadConfig(path)
+	err := v1.LoadConfig(path)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -18,15 +18,15 @@ func auth(c *cli.Context) {
 
 func droplets(c *cli.Context) {
 	auth(c)
-	api.GetDroplets()
+	v1.GetDroplets()
 }
 
 func regions(c *cli.Context) {
 	auth(c)
-	api.GetRegions()
+	v1.GetRegions()
 }
 
 func images(c *cli.Context) {
 	auth(c)
-	api.GetImages()
+	v1.GetImages()
 }
