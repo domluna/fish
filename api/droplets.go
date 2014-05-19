@@ -3,16 +3,8 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"time"
-)
-
-// URL for querying droplets API.
-var (
-	dropletURL = formatURL("droplets")
-	dresp      DropletsResp
 )
 
 // JSON response of Droplets.
@@ -38,33 +30,28 @@ type Droplet struct {
 
 // String representation of a droplet.
 func (d Droplet) String() string {
-    return fmt.Sprintf("%s (Region: %d, ip: \"%s\", status: %s)\n", d.Name, d.RegionID, d.IPAddress, d.Status)
+	return fmt.Sprintf("%s (Region: %d, image_id: %d, ip: \"%s\", status: %s)", d.Name, d.RegionID, d.ImageID, d.IPAddress, d.Status)
 }
 
 // Get all droplets under the given client_id and api_key
 func GetDroplets() {
-	query := fmt.Sprintf("%s?client_id=%s&api_key=%s", dropletURL, config.Conf.ClientID, config.Conf.ApiKey)
-	resp, err := http.Get(query)
+	query := fmt.Sprintf("%s?client_id=%s&api_key=%s", DropletsEndpoint, config.Conf.ClientID, config.Conf.ApiKey)
+	body, err := sendQuery(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = json.Unmarshal(body, &dresp)
+	var resp DropletsResp
+	err = json.Unmarshal(body, &resp)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Output all droplets
 	fmt.Printf("Droplets:\n")
-	for _, d := range dresp.Droplets {
+	for _, d := range resp.Droplets {
 	    fmt.Printf("%v", d)
 	}
+	fmt.Printf("\n")
 
 }

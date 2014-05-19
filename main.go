@@ -4,7 +4,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -28,23 +27,19 @@ func main() {
 		{
 			Name:   "droplets",
 			Usage:  "Stuff with Droplets",
-			Action: droplet,
+			Action: droplets,
 		},
 		// regions
 		{
-			Name:  "regions",
-			Usage: "Stuff with Regions",
-			Action: func(c *cli.Context) {
-				fmt.Println("Nothing here yet!")
-			},
+			Name:   "regions",
+			Usage:  "Stuff with Regions",
+			Action: regions,
 		},
 		// images
 		{
-			Name:  "images",
-			Usage: "Stuff with Images",
-			Action: func(c *cli.Context) {
-				fmt.Println("Nothing here yet!")
-			},
+			Name:   "images",
+			Usage:  "Stuff with Images",
+			Action: images,
 		},
 	}
 	app.Run(os.Args)
