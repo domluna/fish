@@ -17,5 +17,5 @@ func auth(c *cli.Context) {
 
 func droplet(c *cli.Context) {
 	auth(c)
-	api.GetAllDroplets()
+	api.GetDroplets()
 }

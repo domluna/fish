@@ -12,11 +12,11 @@ import (
 // URL for querying droplets API.
 var (
 	dropletURL = formatURL("droplets")
-	dresp      DropletResp
+	dresp      DropletsResp
 )
 
 // JSON response of Droplets.
-type DropletResp struct {
+type DropletsResp struct {
 	Status   string    `json:"status"`
 	Droplets []Droplet `json:"droplets"`
 }
@@ -36,10 +36,14 @@ type Droplet struct {
 	CreatedAt        time.Time `json:"created_at"`
 }
 
+// String representation of a droplet.
+func (d Droplet) String() string {
+    return fmt.Sprintf("%s (Region: %d, ip: \"%s\", status: %s)\n", d.Name, d.RegionID, d.IPAddress, d.Status)
+}
+
 // Get all droplets under the given client_id and api_key
-func GetAllDroplets() {
+func GetDroplets() {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s", dropletURL, config.Conf.ClientID, config.Conf.ApiKey)
-	fmt.Println(query)
 	resp, err := http.Get(query)
 	if err != nil {
 		log.Fatal(err)
@@ -57,9 +61,10 @@ func GetAllDroplets() {
 		log.Fatal(err)
 	}
 
-	b, err := json.MarshalIndent(dresp, "", "\t")
-	if err != nil {
-		log.Fatal(err)
+	// Output all droplets
+	fmt.Printf("Droplets:\n")
+	for _, d := range dresp.Droplets {
+	    fmt.Printf("%v", d)
 	}
-	fmt.Printf("%s\n", b)
+
 }
