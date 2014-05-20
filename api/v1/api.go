@@ -18,6 +18,8 @@ var (
 	ImagesEndpoint = createEndpoint("images")
 	DropletsEndpoint = createEndpoint("droplets")
 	RegionsEndpoint = createEndpoint("regions")
+	SizesEndpoint = createEndpoint("sizes")
+	KeysEndpoint = createEndpoint("ssh_keys")
 )
 
 

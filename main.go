@@ -41,6 +41,19 @@ func main() {
 			Usage:  "Stuff with Images",
 			Action: images,
 		},
+		// sizes
+		{
+			Name:   "sizes",
+			Usage:  "Stuff with Sizes",
+			Action: sizes,
+		},
+		// sshkeys
+		{
+			Name:   "keys",
+			Usage:  "Stuff with SSHKeys",
+			Action: keys,
+		},
+
 	}
 	app.Run(os.Args)
 }

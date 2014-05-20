@@ -30,3 +30,13 @@ func images(c *cli.Context) {
 	auth(c)
 	v1.GetImages()
 }
+
+func sizes(c *cli.Context) {
+	auth(c)
+	v1.GetSizes()
+}
+
+func keys(c *cli.Context) {
+	auth(c)
+	v1.GetSSHKeys()
+}
