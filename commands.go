@@ -3,6 +3,7 @@ package main
 
 import (
 	"log"
+	"fmt"
 
 	"github.com/Niessy/fisherman/api/v1"
 	"github.com/codegangsta/cli"
@@ -16,27 +17,35 @@ func auth(c *cli.Context) {
 	}
 }
 
-func droplets(c *cli.Context) {
+func allDroplets(c *cli.Context) {
 	auth(c)
 	v1.GetDroplets()
 }
 
-func regions(c *cli.Context) {
+func allRegions(c *cli.Context) {
 	auth(c)
 	v1.GetRegions()
 }
 
-func images(c *cli.Context) {
+func allImages(c *cli.Context) {
 	auth(c)
 	v1.GetImages()
 }
 
-func sizes(c *cli.Context) {
+func allSizes(c *cli.Context) {
 	auth(c)
 	v1.GetSizes()
 }
 
-func keys(c *cli.Context) {
+func allKeys(c *cli.Context) {
 	auth(c)
-	v1.GetSSHKeys()
+	keys, err := v1.AllSSHKeys()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("SSHKeys: ")
+	for _, k := range keys {
+		fmt.Printf("%v\n", k)
+	}
+	fmt.Println()
 }

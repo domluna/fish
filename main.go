@@ -27,31 +27,31 @@ func main() {
 		{
 			Name:   "droplets",
 			Usage:  "Stuff with Droplets",
-			Action: droplets,
+			Action: allDroplets,
 		},
 		// regions
 		{
 			Name:   "regions",
 			Usage:  "Stuff with Regions",
-			Action: regions,
+			Action: allRegions,
 		},
 		// images
 		{
 			Name:   "images",
 			Usage:  "Stuff with Images",
-			Action: images,
+			Action: allImages,
 		},
 		// sizes
 		{
 			Name:   "sizes",
 			Usage:  "Stuff with Sizes",
-			Action: sizes,
+			Action: allSizes,
 		},
 		// sshkeys
 		{
 			Name:   "keys",
 			Usage:  "Stuff with SSHKeys",
-			Action: keys,
+			Action: allKeys,
 		},
 
 	}
