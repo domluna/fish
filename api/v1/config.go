@@ -13,7 +13,7 @@ import (
 // api keys will be written to.
 // Defaults to $HOME/.fisherman
 var (
-	defaultConfigFile = "/Users/dluna/.fisherman"
+	defaultConfigFile = fmt.Sprintf("%s/.fisherman", os.ExpandEnv("$HOME"))
 	configFile        = ""
 	config            Config
 )
