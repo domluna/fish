@@ -19,7 +19,7 @@ func AllSSHKeys() ([]SSHKey, error) {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
 		KeysEndpoint,
 		config.Conf.ClientID,
-		config.Conf.ApiKey)
+		config.Conf.APIKey)
 
 	body, err := sendQuery(query)
 	if err != nil {
@@ -50,7 +50,7 @@ func AddSSHKey(name, publicKey string) (SSHKey, error) {
 		name,
 		url.QueryEscape(publicKey),
 		config.Conf.ClientID,
-		config.Conf.ApiKey)
+		config.Conf.APIKey)
 
 	body, err := sendQuery(query)
 	if err != nil {
@@ -80,7 +80,7 @@ func ShowSSHKey(id int) (SSHKey, error) {
 		KeysEndpoint,
 		id,
 		config.Conf.ClientID,
-		config.Conf.ApiKey)
+		config.Conf.APIKey)
 
 	body, err := sendQuery(query)
 	if err != nil {
@@ -111,7 +111,7 @@ func DestroySSHKey(id int) error {
 		KeysEndpoint,
 		id,
 		config.Conf.ClientID,
-		config.Conf.ApiKey)
+		config.Conf.APIKey)
 
 	body, err := sendQuery(query)
 	if err != nil {

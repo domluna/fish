@@ -2,15 +2,11 @@ package v1
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"log"
 )
 
-type ImagesResp struct {
-	Status string  `json:"status"`
-	Images []Image `json:"images"`
-}
-
+// Representation for a DigitalOcean Image.
 type Image struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
@@ -23,22 +19,30 @@ func (i Image) String() string {
 	return fmt.Sprintf("%s (distribution: %s, id: %d)", i.Name, i.Distribution, i.ID)
 }
 
-func GetImages() {
-	query := fmt.Sprintf("%s?client_id=%s&api_key=%s&filter=global", ImagesEndpoint, config.Conf.ClientID, config.Conf.ApiKey)
+func GetImages() ([]Image, error) {
+	query := fmt.Sprintf("%s?client_id=%s&api_key=%s&filter=global",
+		ImagesEndpoint,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
 	body, err := sendQuery(query)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	var resp ImagesResp
+	resp := struct {
+		Status string  `json"status"`
+		Images []Image `json:"images"`
+	}{}
+
 	err = json.Unmarshal(body, &resp)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	fmt.Printf("Images:\n")
-	for _, i := range resp.Images {
-		fmt.Printf("%v\n", i)
+	if resp.Status == "ERROR" {
+		return nil, errors.New("Error retrieving images")
 	}
-	fmt.Printf("\n")
+
+	return resp.Images, nil
 }

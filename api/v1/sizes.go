@@ -2,41 +2,45 @@ package v1
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"log"
 )
 
-type Sizes struct {
-	Status string  `json:"status"`
-	Sizes []Size `json:"sizes"`
-}
-
+// Representation for the size of a DigitalOcean droplet.
 type Size struct {
-	ID           int    `json:"id"`
-	Name         string `json:"name"`
-	Slug         string `json:"slug"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Slug string `json:"slug"`
 }
 
 func (s Size) String() string {
 	return fmt.Sprintf("%s (id: %d)", s.Name, s.ID)
 }
 
-func GetSizes() {
-	query := fmt.Sprintf("%s?client_id=%s&api_key=%s", SizesEndpoint, config.Conf.ClientID, config.Conf.ApiKey)
+func GetSizes() ([]Size, error) {
+	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
+		SizesEndpoint,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
 	body, err := sendQuery(query)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	var resp Sizes
+	resp := struct {
+		Status string `json:"status"`
+		Sizes []Size `json:"sizes"`
+	}{}
+
 	err = json.Unmarshal(body, &resp)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	fmt.Printf("Sizes:\n")
-	for _, s := range resp.Sizes {
-		fmt.Printf("%v\n", s)
+	if resp.Status == "ERROR" {
+		return nil, errors.New("Error retrieving droplet sizes")
 	}
-	fmt.Printf("\n")
+
+	return resp.Sizes, nil
 }

@@ -2,18 +2,12 @@ package v1
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"log"
 	"time"
 )
 
-// JSON response of Droplets.
-type DropletsResp struct {
-	Status   string    `json:"status"`
-	Droplets []Droplet `json:"droplets"`
-}
-
-// Represents a DigitalOcean Droplet.
+// Representation of a DigitalOcean Droplet.
 type Droplet struct {
 	ID               int       `json:"id"`
 	Name             string    `json:"name"`
@@ -34,24 +28,31 @@ func (d Droplet) String() string {
 }
 
 // Get all droplets under the given client_id and api_key
-func GetDroplets() {
-	query := fmt.Sprintf("%s?client_id=%s&api_key=%s", DropletsEndpoint, config.Conf.ClientID, config.Conf.ApiKey)
+func GetDroplets() ([]Droplet, error) {
+	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
 	body, err := sendQuery(query)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	var resp DropletsResp
+	resp := struct {
+		Status   string    `json:"status"`
+		Droplets []Droplet `json:"droplets"`
+	}{}
+
 	err = json.Unmarshal(body, &resp)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	// Output all droplets
-	fmt.Printf("Droplets:\n")
-	for _, d := range resp.Droplets {
-	    fmt.Printf("%v", d)
+	if resp.Status == "ERROR" {
+		return nil, errors.New("Error retrieving droplets")
 	}
-	fmt.Printf("\n")
+
+	return resp.Droplets, nil
 
 }

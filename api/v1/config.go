@@ -26,7 +26,7 @@ type Config struct {
 // Parsed configuration settings.
 type conf struct {
 	ClientID   string `toml:"client_id"`
-	ApiKey     string `toml:"api_key"`
+	APIKey     string `toml:"api_key"`
 	SSHKeyPath string `toml:"ssh_key_path"`
 }
 

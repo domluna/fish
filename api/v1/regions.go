@@ -1,15 +1,11 @@
 package v1
 
 import (
-	"fmt"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"log"
 )
-
-type RegionsResp struct {
-	Status  string   `json:"status"`
-	Regions []Region `json:"regions"`
-}
 
 type Region struct {
 	ID   int    `json:"id"`
@@ -21,22 +17,30 @@ func (r Region) String() string {
 	return fmt.Sprintf("%s (id: %d)", r.Name, r.ID)
 }
 
-func GetRegions() {
-	query := fmt.Sprintf("%s?client_id=%s&api_key=%s", RegionsEndpoint, config.Conf.ClientID, config.Conf.ApiKey)
+func GetRegions() ([]Region, error) {
+	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
+		RegionsEndpoint,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
 	body, err := sendQuery(query)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var resp RegionsResp
+	resp := struct {
+		Status  string   `json"status"`
+		Regions []Region `json:"regions"`
+	}{}
+
 	err = json.Unmarshal(body, &resp)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	fmt.Printf("Regions:\n")
-	for _, r := range resp.Regions {
-		fmt.Printf("%v\n", r)
+	if resp.Status == "ERROR" {
+		return nil, errors.New("Error retrieving regions")
 	}
-	fmt.Printf("\n")
+
+	return resp.Regions, nil
 }

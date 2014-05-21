@@ -9,20 +9,26 @@ import (
 const (
 	// Version of the DigitalOcean API
 	Version = "v1"
-	// DigitalOcean API endpoint	
+	// DigitalOcean API endpoint
 	APIEndpoint = "https://api.digitalocean.com"
 )
 
-// Endpoints for DigitalOcean resources.
 var (
-	ImagesEndpoint = createEndpoint("images")
+	// Image endpoint
+	ImagesEndpoint   = createEndpoint("images")
+
+	// Droplet endpoint
 	DropletsEndpoint = createEndpoint("droplets")
-	RegionsEndpoint = createEndpoint("regions")
-	SizesEndpoint = createEndpoint("sizes")
-	KeysEndpoint = createEndpoint("ssh_keys")
+
+	// Region endpoint
+	RegionsEndpoint  = createEndpoint("regions")
+
+	// Sizes endpoint
+	SizesEndpoint    = createEndpoint("sizes")
+
+	// SSH Key endpoint
+	KeysEndpoint     = createEndpoint("ssh_keys")
 )
-
-
 
 // Forms the api url to for the DigitalOcean resource.
 func createEndpoint(resource string) string {
