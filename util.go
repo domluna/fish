@@ -5,6 +5,9 @@ import (
 	"os"
 	"path"
 	"strings"
+
+	"github.com/Niessy/fisherman/api/v1"
+	"github.com/codegangsta/cli"
 )
 
 // Cleans a filepath and replaces enviroment variables
@@ -23,4 +26,14 @@ func cleanPath(fp, sep string) string {
 func fatalf(format string, v ...interface{}) {
 	println(fmt.Sprintf(format, v...))
 	os.Exit(1)
+}
+
+// For authenticating the configuration variables,
+// client id and api key mainly.
+func auth(c *cli.Context) {
+	path := c.String("configFile")
+	err := v1.LoadConfig(path)
+	if err != nil {
+		fatalf(err.Error())
+	}
 }

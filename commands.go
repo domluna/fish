@@ -10,34 +10,6 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func auth(c *cli.Context) {
-	path := c.String("configFile")
-	err := v1.LoadConfig(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func allDroplets(c *cli.Context) {
-	auth(c)
-	v1.GetDroplets()
-}
-
-func allRegions(c *cli.Context) {
-	auth(c)
-	v1.GetRegions()
-}
-
-func allImages(c *cli.Context) {
-	auth(c)
-	v1.GetImages()
-}
-
-func allSizes(c *cli.Context) {
-	auth(c)
-	v1.GetSizes()
-}
-
 func keys(c *cli.Context) {
 	auth(c)
 	args := c.Args()
@@ -93,9 +65,8 @@ func allKeys() {
 }
 
 func addKey(name, keypath string) {
-	file := cleanPath(keypath, "/")
-	println(keypath)
-	buf, err := ioutil.ReadFile(file)
+	f := cleanPath(keypath, "/")
+	buf, err := ioutil.ReadFile(f)
 	if err != nil {
 		log.Fatal(err)
 	}

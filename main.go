@@ -30,28 +30,36 @@ func main() {
 			Name:      "droplets",
 			ShortName: "d",
 			Usage:     "things with digitalocean droplets",
-			Action:    allDroplets,
+			Action: func(c *cli.Context) {
+
+			},
 		},
 		// regions
 		{
 			Name:      "regions",
 			ShortName: "r",
 			Usage:     "things with digitalocean regions",
-			Action:    allRegions,
+			Action: func(c *cli.Context) {
+
+			},
 		},
 		// images
 		{
 			Name:      "images",
 			ShortName: "i",
 			Usage:     "things with digitalocean images",
-			Action:    allImages,
+			Action: func(c *cli.Context) {
+
+			},
 		},
 		// sizes
 		{
 			Name:      "sizes",
 			ShortName: "s",
 			Usage:     "Stuff with Sizes",
-			Action:    allSizes,
+			Action: func(c *cli.Context) {
+
+			},
 		},
 		// sshkeys
 		{
