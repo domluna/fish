@@ -30,7 +30,7 @@ func GetSizes() ([]Size, error) {
 
 	resp := struct {
 		Status string `json:"status"`
-		Sizes []Size `json:"sizes"`
+		Sizes  []Size `json:"sizes"`
 	}{}
 
 	err = json.Unmarshal(body, &resp)

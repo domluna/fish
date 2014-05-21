@@ -3,8 +3,8 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"io/ioutil"
+	"log"
 
 	"github.com/Niessy/fisherman/api/v1"
 	"github.com/codegangsta/cli"

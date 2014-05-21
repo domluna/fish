@@ -15,19 +15,19 @@ const (
 
 var (
 	// Image endpoint
-	ImagesEndpoint   = createEndpoint("images")
+	ImagesEndpoint = createEndpoint("images")
 
 	// Droplet endpoint
 	DropletsEndpoint = createEndpoint("droplets")
 
 	// Region endpoint
-	RegionsEndpoint  = createEndpoint("regions")
+	RegionsEndpoint = createEndpoint("regions")
 
 	// Sizes endpoint
-	SizesEndpoint    = createEndpoint("sizes")
+	SizesEndpoint = createEndpoint("sizes")
 
 	// SSH Key endpoint
-	KeysEndpoint     = createEndpoint("ssh_keys")
+	KeysEndpoint = createEndpoint("ssh_keys")
 )
 
 // Forms the api url to for the DigitalOcean resource.

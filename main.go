@@ -29,21 +29,21 @@ func main() {
 		{
 			Name:      "droplets",
 			ShortName: "d",
-			Usage:     "Stuff with Droplets",
+			Usage:     "things with digitalocean droplets",
 			Action:    allDroplets,
 		},
 		// regions
 		{
 			Name:      "regions",
 			ShortName: "r",
-			Usage:     "Stuff with Regions",
+			Usage:     "things with digitalocean regions",
 			Action:    allRegions,
 		},
 		// images
 		{
 			Name:      "images",
 			ShortName: "i",
-			Usage:     "Stuff with Images",
+			Usage:     "things with digitalocean images",
 			Action:    allImages,
 		},
 		// sizes

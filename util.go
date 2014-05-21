@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"strings"
-	"fmt"
 )
 
 // Cleans a filepath and replaces enviroment variables
