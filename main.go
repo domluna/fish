@@ -56,15 +56,13 @@ func main() {
 			Usage:     "Stuff with Sizes",
 			Action:    allSizes,
 		},
-		// sshkeys
+		// ssh keys
 		{
 			Name:      "keys",
 			ShortName: "k",
 			Flags: []cli.Flag{
-				cli.IntFlag{"id", -1, "ID of remote ssh key."},
-				cli.StringFlag{"name", "", "Name of ssh key."},
 				cli.StringFlag{
-					"keypath, path",
+					"path, p",
 					"",
 					"Path to ssh key on local machine.",
 				},

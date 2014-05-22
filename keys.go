@@ -15,13 +15,20 @@ func keys(c *cli.Context) {
 	auth(c)
 	args := c.Args()
 
+	// show all keys then exit
 	if len(args) == 0 {
 		allKeys()
 		return
 	}
 
-	// sub command of sshkeys
+	// need 2 arguments 
+	if len(args) != 2 {
+		fatalf("Invalid arguments")
+	}
+
+	// sub command
 	command := args[0]
+
 	switch command {
 	case "show":
 		id, err := strconv.Atoi(args[1])
@@ -30,23 +37,19 @@ func keys(c *cli.Context) {
 		}
 		showKey(id)
 	case "add":
-		keypath := c.String("keypath")
-		name := c.String("name")
+		name := args[1]
+		keypath := c.String("path")
 		if keypath == "" {
-			fatalf("--keypath flag is unspecified")
-		}
-
-		if name == "" {
-			fatalf("--name flag is unspecified")
+			fatalf("--path flag is unspecified")
 		}
 
 		addKey(name, keypath)
-
 	case "rm":
-		if c.Int("id") == -1 {
-			fatalf("--id flag is unspecified")
+		id, err := strconv.Atoi(args[1])
+		if err != nil {
+			fatalf(err.Error())
 		}
-		removeKey(c.Int("id"))
+		removeKey(id)
 
 	default:
 		fatalf("Invalid keys subcommand: try show, add or rm")
