@@ -21,39 +21,12 @@ func keys(c *cli.Context) {
 		return
 	}
 
-	// need 2 arguments 
-	if len(args) != 2 {
-		fatalf("Invalid arguments")
+	id, err := strconv.Atoi(args[0])
+	if err != nil {
+		fatalf(err.Error())
 	}
+	showKey(id)
 
-	// sub command
-	command := args[0]
-
-	switch command {
-	case "show":
-		id, err := strconv.Atoi(args[1])
-		if err != nil {
-			fatalf(err.Error())
-		}
-		showKey(id)
-	case "add":
-		name := args[1]
-		keypath := c.String("path")
-		if keypath == "" {
-			fatalf("--path flag is unspecified")
-		}
-
-		addKey(name, keypath)
-	case "rm":
-		id, err := strconv.Atoi(args[1])
-		if err != nil {
-			fatalf(err.Error())
-		}
-		removeKey(id)
-
-	default:
-		fatalf("Invalid keys subcommand: try show, add or rm")
-	}
 }
 
 func allKeys() {

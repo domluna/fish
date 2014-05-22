@@ -17,9 +17,8 @@ func main() {
 	app.Commands = []cli.Command{
 		// authorize
 		{
-			Name:      "auth",
-			ShortName: "a",
-			Usage:     "Authenticate DigitalOcean credentials",
+			Name:  "auth",
+			Usage: "Authenticate DigitalOcean credentials",
 			Flags: []cli.Flag{
 				cli.StringFlag{"configFile, conf", "", "credentials file"},
 			},
@@ -27,23 +26,20 @@ func main() {
 		},
 		// droplets
 		{
-			Name:      "droplets",
-			ShortName: "d",
-			Usage:     "things with digitalocean droplets",
-			Action:    droplets,
+			Name:   "droplets",
+			Usage:  "List user all droplets",
+			Action: allDroplets,
 		},
 		// regions
 		{
-			Name:      "regions",
-			ShortName: "r",
-			Usage:     "things with digitalocean regions",
-			Action:    allRegions,
+			Name:   "regions",
+			Usage:  "List all regions",
+			Action: allRegions,
 		},
 		// images
 		{
-			Name:      "images",
-			ShortName: "i",
-			Usage:     "things with digitalocean images",
+			Name:  "images",
+			Usage: "Lists all global or user images",
 			Flags: []cli.Flag{
 				cli.BoolFlag{"global, g", "show all DigitalOcean images"},
 			},
@@ -51,29 +47,108 @@ func main() {
 		},
 		// sizes
 		{
-			Name:      "sizes",
-			ShortName: "s",
-			Usage:     "Stuff with Sizes",
-			Action:    allSizes,
+			Name:   "sizes",
+			Usage:  "Lists all available droplet sizes",
+			Action: allSizes,
 		},
 		// ssh keys
 		{
-			Name:      "keys",
-			ShortName: "k",
-			Flags: []cli.Flag{
-				cli.StringFlag{
-					"path, p",
-					"",
-					"Path to ssh key on local machine.",
-				},
-			},
-			Usage:  "Stuff with SSHKeys",
+			Name:   "keys",
+			Usage:  "Lists all user ssh keys",
 			Action: keys,
 		},
 		// ssh access to digitalocean servers
 		{
 			Name:  "ssh",
 			Usage: "Access DigitalOcean servers via ssh",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// add ssh key
+		{
+			Name:  "addkey",
+			Usage: "Add an ssh key",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// remove ssh key
+		{
+			Name:  "rmkey",
+			Usage: "Remove an ssh key",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// create droplet
+		{
+			Name:  "create",
+			Usage: "Create a new droplet",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// destroy droplet
+		{
+			Name:  "destroy",
+			Usage: "Destroy a droplet",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// resize droplet
+		{
+			Name:  "resize",
+			Usage: "Resize a droplet",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// reboot droplet
+		{
+			Name:  "reboot",
+			Usage: "Reboot a droplet",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// rebuild droplet
+		{
+			Name:  "rebuild",
+			Usage: "Rebuilds a droplet with a new image, keeps ip address",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// shutdown droplet
+		{
+			Name:  "stop",
+			Usage: "Shutdown a droplet",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// start droplet
+		{
+			Name:  "start",
+			Usage: "Start up a droplet",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// snapshot droplet
+		{
+			Name:  "snapshot",
+			Usage: "Snapshot a droplet",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
+		},
+		// info droplet
+		{
+			Name:  "info",
+			Usage: "Gives detailed droplet info",
 			Action: func(c *cli.Context) {
 				println("Not implemented yet!")
 			},

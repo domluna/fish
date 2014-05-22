@@ -15,7 +15,4 @@ annoying.
 
 2) when done put api in a seperate directory
 
-3) think about what commands we need for droplets and how to
-add them to the commands list, new commands, subcommands, what?
-
 4) Rethink configuration situation
