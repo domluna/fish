@@ -41,32 +41,60 @@ func allKeys() {
 	fmt.Println()
 }
 
-func addKey(name, keypath string) {
-	f := cleanPath(keypath, "/")
+func showKey(id int) {
+	key, err := v1.GetSSHKey(id)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Printf("%s\n", key.SSHPublicKey)
+}
+
+func addKey(c *cli.Context) {
+	auth(c)
+	args := c.Args()
+
+	if len(args) < 1 {
+		fatalf("first argument is the key name")
+	}
+
+	name := args[0]
+	kp := c.String("path")
+
+	if kp == "" {
+		fatalf("public key path not specified, use --path=$YOURKEYPATH")
+	}
+
+	f := cleanPath(kp, "/")
 	buf, err := ioutil.ReadFile(f)
 	if err != nil {
-		log.Fatal(err)
+		fatalf(err.Error())
 	}
 
 	key, err := v1.AddSSHKey(name, string(buf))
 	if err != nil {
-		log.Fatal(err)
+		fatalf(err.Error())
 	}
-	fmt.Printf("Succesfully added key %s to remote sshkeys\n", key.Name)
+	fmt.Printf("added key %s to remote ssh keys\n", key.Name)
 }
 
-func removeKey(id int) {
-	err := v1.DestroySSHKey(id)
+func rmKey(c *cli.Context) {
+	auth(c)
+	args := c.Args()
+
+	if len(args) < 1 {
+		fatalf("first argument is the key name")
+	}
+
+	id, err := strconv.Atoi(args[0])
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Printf("Succesfully destroyed ssh key (ID: %d)\n", id)
-}
 
-func showKey(id int) {
-	key, err := v1.GetSSHKey(id)
+	println(id)
+
+	err = v1.DestroySSHKey(id)
 	if err != nil {
-		log.Fatal(err)
+		fatalf(err.Error())
 	}
-	fmt.Printf("%s\n", key.SSHPublicKey)
+	fmt.Printf("queued removal of ssh key (id: %d)\n", id)
 }

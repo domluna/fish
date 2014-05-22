@@ -57,26 +57,25 @@ func main() {
 			Usage:  "Lists all user ssh keys",
 			Action: keys,
 		},
-		// ssh access to digitalocean servers
-		{
-			Name:  "ssh",
-			Usage: "Access DigitalOcean servers via ssh",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
-		},
 		// add ssh key
 		{
 			Name:  "addkey",
 			Usage: "Add an ssh key",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
+			Flags: []cli.Flag{
+				cli.StringFlag{"path, p", "", "path to the public key"},
 			},
+			Action: addKey,
 		},
 		// remove ssh key
 		{
-			Name:  "rmkey",
-			Usage: "Remove an ssh key",
+			Name:   "rmkey",
+			Usage:  "Remove an ssh key",
+			Action: rmKey,
+		},
+		// ssh access to digitalocean servers
+		{
+			Name:  "ssh",
+			Usage: "Access DigitalOcean servers via ssh",
 			Action: func(c *cli.Context) {
 				println("Not implemented yet!")
 			},
@@ -116,7 +115,7 @@ func main() {
 		// rebuild droplet
 		{
 			Name:  "rebuild",
-			Usage: "Rebuilds a droplet with a new image, keeps ip address",
+			Usage: "Rebuilds a droplet with a default image, keeps ip address",
 			Action: func(c *cli.Context) {
 				println("Not implemented yet!")
 			},

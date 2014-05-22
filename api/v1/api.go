@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -9,31 +8,22 @@ import (
 const (
 	// Version of the DigitalOcean API
 	Version = "v1"
-	// DigitalOcean API endpoint
-	APIEndpoint = "https://api.digitalocean.com"
-)
 
-var (
 	// Image endpoint
-	ImagesEndpoint = createEndpoint("images")
+	ImagesEndpoint = "https://api.digitalocean.com/v1/images"
 
 	// Droplet endpoint
-	DropletsEndpoint = createEndpoint("droplets")
+	DropletsEndpoint = "https://api.digitalocean.com/v1/droplets"
 
 	// Region endpoint
-	RegionsEndpoint = createEndpoint("regions")
+	RegionsEndpoint = "https://api.digitalocean.com/v1/regions"
 
 	// Sizes endpoint
-	SizesEndpoint = createEndpoint("sizes")
+	SizesEndpoint = "https://api.digitalocean.com/v1/sizes"
 
 	// SSH Key endpoint
-	KeysEndpoint = createEndpoint("ssh_keys")
+	KeysEndpoint = "https://api.digitalocean.com/v1/ssh_keys"
 )
-
-// Forms the api url to for the DigitalOcean resource.
-func createEndpoint(resource string) string {
-	return fmt.Sprintf("%s/%s/%s", APIEndpoint, Version, resource)
-}
 
 // Sends a GET request to the query url and returns
 // the response or an error.

@@ -7,14 +7,14 @@ import (
 	"net/url"
 )
 
-// DigitalOcean ssh key representation.
+// SSHKey represents DigitalOcean ssh key.
 type SSHKey struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	SSHPublicKey string `json:"ssh_pub_key"`
 }
 
-// Get all the users current ssh keys.
+// GetSSHKeys retrieves all the users current ssh keys.
 func GetSSHKeys() ([]SSHKey, error) {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
 		KeysEndpoint,
@@ -36,14 +36,14 @@ func GetSSHKeys() ([]SSHKey, error) {
 		return nil, err
 	}
 
-	if resp.Status == "ERROR" {
+	if resp.Status != "OK" {
 		return nil, errors.New("Error retrieving ssh keys")
 	}
 
 	return resp.SSHKeys, nil
 }
 
-// Adds an ssh key to the user account
+// AddSSHKey adds an ssh key to the user account.
 func AddSSHKey(name, publicKey string) (SSHKey, error) {
 	query := fmt.Sprintf("%s/new/?name=%s&ssh_pub_key=%s&client_id=%s&api_key=%s",
 		KeysEndpoint,
@@ -67,14 +67,14 @@ func AddSSHKey(name, publicKey string) (SSHKey, error) {
 		return SSHKey{}, err
 	}
 
-	if resp.Status == "ERROR" {
-		return SSHKey{}, errors.New("Error adding key")
+	if resp.Status != "OK" {
+		return SSHKey{}, errors.New("Error adding key, might be something wrong with the endpoint")
 	}
 
 	return resp.SSHKey, nil
 }
 
-// Show the full public ssh key of the passed id.
+// GetSSHKey returns the public key, this includes the public key.
 func GetSSHKey(id int) (SSHKey, error) {
 	query := fmt.Sprintf("%s/%d/?client_id=%s&api_key=%s",
 		KeysEndpoint,
@@ -97,15 +97,15 @@ func GetSSHKey(id int) (SSHKey, error) {
 		return SSHKey{}, err
 	}
 
-	if resp.Status == "ERROR" {
+	if resp.Status != "OK" {
 		return SSHKey{}, errors.New("Invalid ssh key id")
 	}
 
 	return resp.SSHKey, nil
 }
 
-// Destroys the ssh key with passed id from
-// user account.
+// DestroySSHKey destroys the ssh key with
+// passed id from user account.
 func DestroySSHKey(id int) error {
 	query := fmt.Sprintf("%s/%d/destroy/?client_id=%s&api_key=%s",
 		KeysEndpoint,
@@ -127,8 +127,8 @@ func DestroySSHKey(id int) error {
 		return err
 	}
 
-	if resp.Status == "ERROR" {
-		errors.New("Invalid ssh key id")
+	if resp.Status != "OK" {
+		errors.New("Did not remove ssh key, are you sure the id is correct?")
 	}
 
 	return nil
