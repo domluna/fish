@@ -15,7 +15,7 @@ type SSHKey struct {
 }
 
 // Get all the users current ssh keys.
-func AllSSHKeys() ([]SSHKey, error) {
+func GetSSHKeys() ([]SSHKey, error) {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
 		KeysEndpoint,
 		config.Conf.ClientID,
@@ -75,7 +75,7 @@ func AddSSHKey(name, publicKey string) (SSHKey, error) {
 }
 
 // Show the full public ssh key of the passed id.
-func ShowSSHKey(id int) (SSHKey, error) {
+func GetSSHKey(id int) (SSHKey, error) {
 	query := fmt.Sprintf("%s/%d/?client_id=%s&api_key=%s",
 		KeysEndpoint,
 		id,

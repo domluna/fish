@@ -53,7 +53,7 @@ func keys(c *cli.Context) {
 }
 
 func allKeys() {
-	keys, err := v1.AllSSHKeys()
+	keys, err := v1.GetSSHKeys()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -87,7 +87,7 @@ func destroyKey(id int) {
 }
 
 func showKey(id int) {
-	key, err := v1.ShowSSHKey(id)
+	key, err := v1.GetSSHKey(id)
 	if err != nil {
 		log.Fatal(err)
 	}

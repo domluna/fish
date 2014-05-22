@@ -13,10 +13,6 @@ type Size struct {
 	Slug string `json:"slug"`
 }
 
-func (s Size) String() string {
-	return fmt.Sprintf("%s (id: %d)", s.Name, s.ID)
-}
-
 func GetSizes() ([]Size, error) {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
 		SizesEndpoint,

@@ -39,9 +39,7 @@ func main() {
 			Name:      "regions",
 			ShortName: "r",
 			Usage:     "things with digitalocean regions",
-			Action: func(c *cli.Context) {
-
-			},
+			Action:    allRegions,
 		},
 		// images
 		{
@@ -57,9 +55,7 @@ func main() {
 			Name:      "sizes",
 			ShortName: "s",
 			Usage:     "Stuff with Sizes",
-			Action: func(c *cli.Context) {
-
-			},
+			Action: allSizes,
 		},
 		// sshkeys
 		{

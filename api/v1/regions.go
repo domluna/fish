@@ -13,10 +13,6 @@ type Region struct {
 	Slug string `json:"slug"`
 }
 
-func (r Region) String() string {
-	return fmt.Sprintf("%s (id: %d)", r.Name, r.ID)
-}
-
 func GetRegions() ([]Region, error) {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
 		RegionsEndpoint,
