@@ -30,9 +30,7 @@ func main() {
 			Name:      "droplets",
 			ShortName: "d",
 			Usage:     "things with digitalocean droplets",
-			Action: func(c *cli.Context) {
-
-			},
+			Action: droplets,
 		},
 		// regions
 		{
@@ -46,16 +44,17 @@ func main() {
 			Name:      "images",
 			ShortName: "i",
 			Usage:     "things with digitalocean images",
-			Action: func(c *cli.Context) {
-
+			Flags: []cli.Flag{
+				cli.BoolFlag{"global, g", "show all DigitalOcean images"},
 			},
+			Action: allImages,
 		},
 		// sizes
 		{
 			Name:      "sizes",
 			ShortName: "s",
 			Usage:     "Stuff with Sizes",
-			Action: allSizes,
+			Action:    allSizes,
 		},
 		// sshkeys
 		{
@@ -72,6 +71,14 @@ func main() {
 			},
 			Usage:  "Stuff with SSHKeys",
 			Action: keys,
+		},
+		// ssh access to digitalocean servers
+		{
+			Name:  "ssh",
+			Usage: "Access DigitalOcean servers via ssh",
+			Action: func(c *cli.Context) {
+				println("Not implemented yet!")
+			},
 		},
 	}
 	app.Run(os.Args)

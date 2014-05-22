@@ -22,11 +22,6 @@ type Droplet struct {
 	CreatedAt        time.Time `json:"created_at"`
 }
 
-// String representation of a droplet.
-func (d Droplet) String() string {
-	return fmt.Sprintf("%s (Region: %d, image_id: %d, ip: \"%s\", status: %s)", d.Name, d.RegionID, d.ImageID, d.IPAddress, d.Status)
-}
-
 // Get all droplets under the given client_id and api_key
 func GetDroplets() ([]Droplet, error) {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
@@ -55,4 +50,34 @@ func GetDroplets() ([]Droplet, error) {
 
 	return resp.Droplets, nil
 
+}
+
+// Gets the Droplet with the given id
+func GetDroplet(id int) (Droplet, error) {
+	query := fmt.Sprintf("%s/%d/?client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return Droplet{}, err
+	}
+
+	resp := struct {
+		Status  string  `json:"status"`
+		Droplet Droplet `json:"droplet"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return Droplet{}, err
+	}
+
+	if resp.Status == "ERROR" {
+		return Droplet{}, errors.New("Error retrieving droplet")
+	}
+
+	return resp.Droplet, nil
 }

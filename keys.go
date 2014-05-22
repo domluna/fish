@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strconv"
 
 	"github.com/Niessy/fisherman/api/v1"
 	"github.com/codegangsta/cli"
@@ -14,20 +15,20 @@ func keys(c *cli.Context) {
 	auth(c)
 	args := c.Args()
 
-	if len(args) != 1 {
-		fatalf("Subcommands include add, show, and destroy")
+	if len(args) == 0 {
+		allKeys()
+		return
 	}
 
 	// sub command of sshkeys
 	command := args[0]
 	switch command {
 	case "show":
-		if c.Int("id") == -1 {
-			allKeys()
-			return
+		id, err := strconv.Atoi(args[1])
+		if err != nil {
+			fatalf(err.Error())
 		}
-		showKey(c.Int("id"))
-
+		showKey(id)
 	case "add":
 		keypath := c.String("keypath")
 		name := c.String("name")
@@ -41,14 +42,14 @@ func keys(c *cli.Context) {
 
 		addKey(name, keypath)
 
-	case "destroy":
+	case "rm":
 		if c.Int("id") == -1 {
 			fatalf("--id flag is unspecified")
 		}
-		destroyKey(c.Int("id"))
+		removeKey(c.Int("id"))
 
 	default:
-		fatalf("Invalid subcommand")
+		fatalf("Invalid keys subcommand: try show, add or rm")
 	}
 }
 
@@ -78,7 +79,7 @@ func addKey(name, keypath string) {
 	fmt.Printf("Succesfully added key %s to remote sshkeys\n", key.Name)
 }
 
-func destroyKey(id int) {
+func removeKey(id int) {
 	err := v1.DestroySSHKey(id)
 	if err != nil {
 		fatalf(err.Error())

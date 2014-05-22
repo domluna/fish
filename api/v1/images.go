@@ -15,15 +15,12 @@ type Image struct {
 	Public       bool   `json:"public"`
 }
 
-func (i Image) String() string {
-	return fmt.Sprintf("%s (distribution: %s, id: %d)", i.Name, i.Distribution, i.ID)
-}
-
-func GetImages() ([]Image, error) {
-	query := fmt.Sprintf("%s?client_id=%s&api_key=%s&filter=global",
+func GetImages(filter string) ([]Image, error) {
+	query := fmt.Sprintf("%s?client_id=%s&api_key=%s&filter=%s",
 		ImagesEndpoint,
 		config.Conf.ClientID,
-		config.Conf.APIKey)
+		config.Conf.APIKey,
+		filter)
 
 	body, err := sendQuery(query)
 	if err != nil {

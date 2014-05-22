@@ -17,7 +17,8 @@ func GetRegions() ([]Region, error) {
 	query := fmt.Sprintf("%s?client_id=%s&api_key=%s",
 		RegionsEndpoint,
 		config.Conf.ClientID,
-		config.Conf.APIKey)
+		config.Conf.APIKey,
+		)
 
 	body, err := sendQuery(query)
 	if err != nil {
