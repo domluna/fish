@@ -30,7 +30,7 @@ func main() {
 			Name:      "droplets",
 			ShortName: "d",
 			Usage:     "things with digitalocean droplets",
-			Action: droplets,
+			Action:    droplets,
 		},
 		// regions
 		{

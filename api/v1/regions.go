@@ -18,7 +18,7 @@ func GetRegions() ([]Region, error) {
 		RegionsEndpoint,
 		config.Conf.ClientID,
 		config.Conf.APIKey,
-		)
+	)
 
 	body, err := sendQuery(query)
 	if err != nil {
