@@ -13,8 +13,8 @@ import (
 
 func keys(c *cli.Context) {
 	auth(c)
-	args := c.Args()
 
+	args := c.Args()
 	// show all keys then exit
 	if len(args) == 0 {
 		allKeys()
@@ -54,14 +54,15 @@ func addKey(c *cli.Context) {
 	args := c.Args()
 
 	if len(args) < 1 {
-		fatalf("first argument is the key name")
+		cli.ShowCommandHelp(c, c.Command.Name)
+		return
 	}
 
 	name := args[0]
 	kp := c.String("path")
 
 	if kp == "" {
-		fatalf("public key path not specified, use --path=$YOURKEYPATH")
+		fatalf("Public key path not specified, use --path=$YOURKEYPATH")
 	}
 
 	f := cleanPath(kp, "/")
@@ -74,7 +75,7 @@ func addKey(c *cli.Context) {
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Printf("added key %s to remote ssh keys\n", key.Name)
+	fmt.Printf("Added key %s to remote ssh keys\n", key.Name)
 }
 
 func rmKey(c *cli.Context) {
@@ -82,7 +83,8 @@ func rmKey(c *cli.Context) {
 	args := c.Args()
 
 	if len(args) < 1 {
-		fatalf("first argument is the key name")
+		cli.ShowCommandHelp(c, c.Command.Name)
+		return
 	}
 
 	id, err := strconv.Atoi(args[0])
@@ -96,5 +98,5 @@ func rmKey(c *cli.Context) {
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Printf("queued removal of ssh key (id: %d)\n", id)
+	fmt.Printf("Queued removal of ssh key (id: %d)\n", id)
 }

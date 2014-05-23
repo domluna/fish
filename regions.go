@@ -7,7 +7,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func allRegions(c *cli.Context) {
+func regions(c *cli.Context) {
 	auth(c)
 
 	args := c.Args()

@@ -30,14 +30,6 @@ type conf struct {
 	SSHKeyPath string `toml:"ssh_key_path"`
 }
 
-// Returns whether the filepath exists.
-func FileExists(path string) bool {
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return false
-	}
-	return true
-}
-
 // Loads the configuration from the filepath. If there's any
 // issue an error will be returned.
 func LoadConfig(path string) error {
@@ -47,7 +39,7 @@ func LoadConfig(path string) error {
 		configFile = path
 	}
 
-	if !FileExists(configFile) {
+	if !fileExists(configFile) {
 		return errors.New(fmt.Sprintf("Configuration file not found at %s\n", configFile))
 	}
 

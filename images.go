@@ -7,7 +7,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-func allImages(c *cli.Context) {
+func images(c *cli.Context) {
 	auth(c)
 
 	filter := "my_images"

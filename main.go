@@ -28,13 +28,13 @@ func main() {
 		{
 			Name:   "droplets",
 			Usage:  "List user all droplets",
-			Action: allDroplets,
+			Action: droplets,
 		},
 		// regions
 		{
 			Name:   "regions",
 			Usage:  "List all regions",
-			Action: allRegions,
+			Action: regions,
 		},
 		// images
 		{
@@ -43,13 +43,13 @@ func main() {
 			Flags: []cli.Flag{
 				cli.BoolFlag{"global, g", "show all DigitalOcean images"},
 			},
-			Action: allImages,
+			Action: images,
 		},
 		// sizes
 		{
 			Name:   "sizes",
 			Usage:  "Lists all available droplet sizes",
-			Action: allSizes,
+			Action: sizes,
 		},
 		// ssh keys
 		{
@@ -59,8 +59,9 @@ func main() {
 		},
 		// add ssh key
 		{
-			Name:  "addkey",
-			Usage: "Add an ssh key",
+			Name:        "addkey",
+			Usage:       "Add an ssh key",
+			Description: "First argument is the key name",
 			Flags: []cli.Flag{
 				cli.StringFlag{"path, p", "", "path to the public key"},
 			},
@@ -68,9 +69,10 @@ func main() {
 		},
 		// remove ssh key
 		{
-			Name:   "rmkey",
-			Usage:  "Remove an ssh key",
-			Action: rmKey,
+			Name:        "rmkey",
+			Usage:       "Remove an ssh key",
+			Description: "First argument is the key id",
+			Action:      rmKey,
 		},
 		// ssh access to digitalocean servers
 		{
@@ -82,19 +84,25 @@ func main() {
 		},
 		// create droplet
 		{
-			Name:  "create",
-			Usage: "Create a new droplet",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
+			Name:        "create",
+			Usage:       "Create a new droplet",
+			Description: "First argument is the name of the droplet",
+			Flags: []cli.Flag{
+				cli.IntFlag{"image, i", 0, "image id"},
+				cli.IntFlag{"size, s", 0, "size id"},
+				cli.IntFlag{"region, r", 0, "region id"},
+				cli.StringFlag{"path, p", "", "path to the public key"},
+				cli.BoolFlag{"network, n", "enable private networking"},
+				cli.BoolFlag{"backups, b", "enable backups"},
 			},
+			Action: create,
 		},
 		// destroy droplet
 		{
-			Name:  "destroy",
-			Usage: "Destroy a droplet",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Name:        "destroy",
+			Description: "First arugment is the droplet id",
+			Usage:       "Destroy a droplet",
+			Action:      destroy,
 		},
 		// resize droplet
 		{

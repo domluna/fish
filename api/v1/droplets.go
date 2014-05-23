@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -16,7 +18,7 @@ type Droplet struct {
 	RegionID         int       `json:"region_id"`
 	BackupsActive    bool      `json:"backups_active"`
 	IPAddress        string    `json:"ip_address"`
-	PrivateIPAddress bool      `json:"private_ip_address"`
+	PrivateIPAddress string    `json:"private_ip_address"`
 	Locked           bool      `json:"locked"`
 	Status           string    `json:"status"`
 	CreatedAt        time.Time `json:"created_at"`
@@ -83,21 +85,75 @@ func GetDroplet(id int) (Droplet, error) {
 }
 
 // CreateDroplet creates a droplet based on based specs.
-func CreateDroplet() {
+func CreateDroplet(name string, sizeID, imageID, regionID int, keys []string) (Droplet, error) {
+
+	// Escape ssh keys into a url safe parameter
+	for i, k := range keys {
+		keys[i] = url.QueryEscape(k)
+	}
+	ks := strings.Join(keys, ",")
+
 	query := fmt.Sprintf("%s/new?client_id=%s&api_key=%s&name=%s&size_id=%d&image_id=%d&region_id=%d&ssh_key_ids=%s",
 		DropletsEndpoint,
 		config.Conf.ClientID,
 		config.Conf.APIKey,
-		"",
-		0,
-		0,
-		0,
-		"")
+		name,
+		sizeID,
+		imageID,
+		regionID,
+		ks)
+	println(query)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return Droplet{}, err
+	}
+
+	resp := struct {
+		Status  string  `json:"status"`
+		Droplet Droplet `json:"droplet"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return Droplet{}, err
+	}
+
+	if resp.Status != "OK" {
+		return Droplet{}, errors.New("Error creating droplet")
+	}
+
+	return resp.Droplet, nil
 }
 
 // DestroyDroplet destroys a droplet. CAUTION - this is irreversible.
 // There may be more appropriate options.
-func DestroyDroplet() {
+func DestroyDroplet(id int) error {
+	query := fmt.Sprintf("%s/%d/destroy/?client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status string `json:"status"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status != "OK" {
+		return errors.New("Error destroying droplet, perhaps the id is wrong")
+	}
+
+	return nil
 }
 
 // ResizeDroplet droplet resizes a droplet. Sizes are based on
