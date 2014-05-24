@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/url"
-	"strings"
 	"time"
 )
 
@@ -37,8 +35,9 @@ func GetDroplets() ([]Droplet, error) {
 	}
 
 	resp := struct {
-		Status   string    `json:"status"`
-		Droplets []Droplet `json:"droplets"`
+		Status     string    `json:"status"`
+		Droplets   []Droplet `json:"droplets"`
+		ErrMessage string    `json:"error_message"`
 	}{}
 
 	err = json.Unmarshal(body, &resp)
@@ -47,7 +46,7 @@ func GetDroplets() ([]Droplet, error) {
 	}
 
 	if resp.Status == "ERROR" {
-		return nil, errors.New("Error retrieving droplets")
+		return nil, errors.New(resp.ErrMessage)
 	}
 
 	return resp.Droplets, nil
@@ -68,8 +67,9 @@ func GetDroplet(id int) (Droplet, error) {
 	}
 
 	resp := struct {
-		Status  string  `json:"status"`
-		Droplet Droplet `json:"droplet"`
+		Status     string  `json:"status"`
+		Droplet    Droplet `json:"droplet"`
+		ErrMessage string  `json:"error_message"`
 	}{}
 
 	err = json.Unmarshal(body, &resp)
@@ -78,21 +78,14 @@ func GetDroplet(id int) (Droplet, error) {
 	}
 
 	if resp.Status == "ERROR" {
-		return Droplet{}, errors.New("Error retrieving droplet")
+		return Droplet{}, errors.New(resp.ErrMessage)
 	}
 
 	return resp.Droplet, nil
 }
 
 // CreateDroplet creates a droplet based on based specs.
-func CreateDroplet(name string, sizeID, imageID, regionID int, keys []string) (Droplet, error) {
-
-	// Escape ssh keys into a url safe parameter
-	for i, k := range keys {
-		keys[i] = url.QueryEscape(k)
-	}
-	ks := strings.Join(keys, ",")
-
+func CreateDroplet(name string, sizeID, imageID, regionID int, keys string) (Droplet, error) {
 	query := fmt.Sprintf("%s/new?client_id=%s&api_key=%s&name=%s&size_id=%d&image_id=%d&region_id=%d&ssh_key_ids=%s",
 		DropletsEndpoint,
 		config.Conf.ClientID,
@@ -101,8 +94,7 @@ func CreateDroplet(name string, sizeID, imageID, regionID int, keys []string) (D
 		sizeID,
 		imageID,
 		regionID,
-		ks)
-	println(query)
+		keys)
 
 	body, err := sendQuery(query)
 	if err != nil {
@@ -110,8 +102,9 @@ func CreateDroplet(name string, sizeID, imageID, regionID int, keys []string) (D
 	}
 
 	resp := struct {
-		Status  string  `json:"status"`
-		Droplet Droplet `json:"droplet"`
+		Status     string  `json:"status"`
+		Droplet    Droplet `json:"droplet"`
+		ErrMessage string  `json:"error_message"`
 	}{}
 
 	err = json.Unmarshal(body, &resp)
@@ -119,8 +112,8 @@ func CreateDroplet(name string, sizeID, imageID, regionID int, keys []string) (D
 		return Droplet{}, err
 	}
 
-	if resp.Status != "OK" {
-		return Droplet{}, errors.New("Error creating droplet")
+	if resp.Status == "ERROR" {
+		return Droplet{}, errors.New(resp.ErrMessage)
 	}
 
 	return resp.Droplet, nil
@@ -141,7 +134,8 @@ func DestroyDroplet(id int) error {
 	}
 
 	resp := struct {
-		Status string `json:"status"`
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
 	}{}
 
 	err = json.Unmarshal(body, &resp)
@@ -149,8 +143,8 @@ func DestroyDroplet(id int) error {
 		return err
 	}
 
-	if resp.Status != "OK" {
-		return errors.New("Error destroying droplet, perhaps the id is wrong")
+	if resp.Status == "ERROR" {
+		return errors.New(resp.ErrMessage)
 	}
 
 	return nil
@@ -158,30 +152,191 @@ func DestroyDroplet(id int) error {
 
 // ResizeDroplet droplet resizes a droplet. Sizes are based on
 // the digitalocean sizes api.
-func ResizeDroplet() {
+func ResizeDroplet(id int, slug string) error {
+	query := fmt.Sprintf("%s/%d/resize/?size_slug=%s&client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		slug,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	fmt.Println(query)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status == "ERROR" {
+		return errors.New(resp.ErrMessage)
+	}
+
+	return nil
 }
 
 // RebootDroplet reboots the a droplet. This is the preferred method
 // to use if a server is not responding.
-func RebootDroplet() {
+func RebootDroplet(id int) error {
+	query := fmt.Sprintf("%s/%d/reboot/?client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status == "ERROR" {
+		return errors.New(resp.ErrMessage)
+	}
+
+	return nil
 }
 
 // RebootDroplet rebuilds a droplet with a default image. This can be
 // useful if you want to use a different image but keep the ip address
 // of the droplet.
-func RebuildDroplet() {
+func RebuildDroplet(imageID, id int) error {
+	query := fmt.Sprintf("%s/%d/rebuild/?image_id=%d&client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		imageID,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status == "ERROR" {
+		return errors.New("Error rebuilding droplet with new image")
+	}
+
+	return nil
 }
 
-// ShutdownDroplet powers off a running droplet, the droplet will remain
+// StopDroplet powers off a running droplet, the droplet will remain
 // in your account.
-func ShutdownDroplet() {
+func StopDroplet(id int) error {
+	query := fmt.Sprintf("%s/%d/power_off/?client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status == "ERROR" {
+		return errors.New("Error powering off droplet")
+	}
+
+	return nil
 }
 
 // StartDroplet powers on a powered off droplet.
-func StartDroplet() {
+func StartDroplet(id int) error {
+	query := fmt.Sprintf("%s/%d/power_on/?client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status == "ERROR" {
+		return errors.New(resp.ErrMessage)
+	}
+
+	return nil
 }
 
 // SnapshotDroplet allows you to take a snapshot of a droplet once it is
 // powered off. Be aware this may reboot the droplet.
-func SnapshotDroplet() {
+func SnapshotDroplet(name string, id int) error {
+	query := fmt.Sprintf("%s/%d/snapshot/?name=%s&client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		name,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status == "ERROR" {
+		return errors.New(resp.ErrMessage)
+	}
+
+	return nil
 }

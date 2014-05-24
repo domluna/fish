@@ -8,8 +8,8 @@ import (
 
 // Sends a GET request to the query url and returns
 // the response or an error.
-func sendQuery(query string) ([]byte, error) {
-	resp, err := http.Get(query)
+func sendQuery(endpoint string) ([]byte, error) {
+	resp, err := http.Get(endpoint)
 	if err != nil {
 		return nil, err
 	}

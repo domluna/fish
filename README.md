@@ -16,3 +16,7 @@ annoying.
 2) when done put api in a seperate directory
 
 4) Rethink configuration situation
+
+Some observations:
+
+The query parameters don't matter for the api only reads the parameters it needs for that particular endpoint. Thus I could have a generic string with all the parameters, help reduce code.

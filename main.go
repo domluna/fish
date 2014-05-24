@@ -61,7 +61,7 @@ func main() {
 		{
 			Name:        "addkey",
 			Usage:       "Add an ssh key",
-			Description: "First argument is the key name",
+			Description: "First arg is the key name",
 			Flags: []cli.Flag{
 				cli.StringFlag{"path, p", "", "path to the public key"},
 			},
@@ -71,7 +71,7 @@ func main() {
 		{
 			Name:        "rmkey",
 			Usage:       "Remove an ssh key",
-			Description: "First argument is the key id",
+			Description: "First arg is the key id",
 			Action:      rmKey,
 		},
 		// ssh access to digitalocean servers
@@ -86,12 +86,12 @@ func main() {
 		{
 			Name:        "create",
 			Usage:       "Create a new droplet",
-			Description: "First argument is the name of the droplet",
+			Description: "First arg is the name of the droplet",
 			Flags: []cli.Flag{
 				cli.IntFlag{"image, i", 0, "image id"},
 				cli.IntFlag{"size, s", 0, "size id"},
 				cli.IntFlag{"region, r", 0, "region id"},
-				cli.StringFlag{"path, p", "", "path to the public key"},
+				cli.StringFlag{"keys, k", "", "ssh key ids, comma seperated"},
 				cli.BoolFlag{"network, n", "enable private networking"},
 				cli.BoolFlag{"backups, b", "enable backups"},
 			},
@@ -100,7 +100,7 @@ func main() {
 		// destroy droplet
 		{
 			Name:        "destroy",
-			Description: "First arugment is the droplet id",
+			Description: "First arg is the droplet id",
 			Usage:       "Destroy a droplet",
 			Action:      destroy,
 		},
@@ -108,57 +108,47 @@ func main() {
 		{
 			Name:  "resize",
 			Usage: "Resize a droplet",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
+			Description: "First arg is the droplet id",
+			Flags: []cli.Flag{
+				cli.StringFlag{"size, s", "", "size slug, Ex. 512MB, 1GB"},
 			},
+			Action: resize,
 		},
 		// reboot droplet
 		{
 			Name:  "reboot",
 			Usage: "Reboot a droplet",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Action: reboot,
 		},
 		// rebuild droplet
 		{
 			Name:  "rebuild",
 			Usage: "Rebuilds a droplet with a default image, keeps ip address",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Action: rebuild,
 		},
-		// shutdown droplet
+		// stop droplet
 		{
 			Name:  "stop",
 			Usage: "Shutdown a droplet",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Action: stop,
 		},
 		// start droplet
 		{
 			Name:  "start",
 			Usage: "Start up a droplet",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Action: start,
 		},
 		// snapshot droplet
 		{
 			Name:  "snapshot",
 			Usage: "Snapshot a droplet",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Action: snapshot,
 		},
 		// info droplet
 		{
 			Name:  "info",
 			Usage: "Gives detailed droplet info",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Action: info,
 		},
 	}
 	app.Run(os.Args)

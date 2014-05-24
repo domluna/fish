@@ -2,10 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"strconv"
-	"strings"
 
 	"github.com/Niessy/fisherman/api/v1"
 	"github.com/codegangsta/cli"
@@ -42,19 +39,9 @@ func create(c *cli.Context) {
 	iID := c.Int("image")
 	sID := c.Int("size")
 	rID := c.Int("region")
-	p := c.String("path")
+	keys := c.String("keys")
 
-	// Clean paths, get public keys
-	kpaths := strings.Split(p, ",")
-	for i, kp := range kpaths {
-		buf, err := ioutil.ReadFile(cleanPath(kp, "/"))
-		if err != nil {
-			log.Println(err)
-		}
-		kpaths[i] = string(buf)
-	}
-
-	droplet, err := v1.CreateDroplet(name, sID, iID, rID, kpaths)
+	droplet, err := v1.CreateDroplet(name, sID, iID, rID, keys)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -81,4 +68,67 @@ func destroy(c *cli.Context) {
 	}
 
 	fmt.Printf("Queing droplet for deletion ... \n")
+}
+
+func resize(c *cli.Context) {
+	auth(c)
+	args := c.Args()
+	if len(args) < 1 {
+		fmt.Printf("Incorrect Usage\n")
+		cli.ShowCommandHelp(c, c.Command.Name)
+		return
+	}
+
+	id, err := strconv.Atoi(args[0])
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	slug := c.String("size")
+
+	err = v1.ResizeDroplet(id, slug)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Printf("resizing droplet\n")
+}
+
+func reboot(c *cli.Context) {
+	auth(c)
+	args := c.Args()
+	if len(args) < 1 {
+		fmt.Printf("Incorrect Usage\n")
+		cli.ShowCommandHelp(c, c.Command.Name)
+		return
+	}
+
+	id, err := strconv.Atoi(args[0])
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	err = v1.RebootDroplet(id)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Printf("rebooting droplet\n")
+}
+
+func rebuild(c *cli.Context) {
+	auth(c)
+}
+
+func stop(c *cli.Context) {
+	auth(c)
+}
+
+func start(c *cli.Context) {
+	auth(c)
+}
+
+func snapshot(c *cli.Context) {
+	auth(c)
+}
+
+func info(c *cli.Context) {
 }
