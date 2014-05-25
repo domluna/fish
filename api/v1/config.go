@@ -13,7 +13,7 @@ import (
 // api keys will be written to.
 // Defaults to $HOME/.fisherman
 var (
-	defaultConfigFile = fmt.Sprintf("%s/.fisherman", os.ExpandEnv("$HOME"))
+	defaultConfigFile = fmt.Sprintf("%s/.fish", os.ExpandEnv("$HOME"))
 	configFile        = ""
 	config            Config
 )
