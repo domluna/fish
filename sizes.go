@@ -7,7 +7,6 @@ import (
 )
 
 func sizes(c *cli.Context) {
-	auth(c)
 	sizes, err := dogo.GetSizes()
 	if err != nil {
 		fatalf(err.Error())

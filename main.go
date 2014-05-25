@@ -7,23 +7,19 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
+	"github.com/Niessy/dogo"
 )
+
+func init() {
+	dogo.LoadConfig("")
+}
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "fisherman"
+	app.Name = "fish"
 	app.Author = "Dominique Luna"
 	app.Usage = "Command Line Interface for DigitalOcean"
 	app.Commands = []cli.Command{
-		// authorize
-		{
-			Name:  "auth",
-			Usage: "Authenticate DigitalOcean credentials",
-			Flags: []cli.Flag{
-				cli.StringFlag{"configFile, conf", "", "credentials file"},
-			},
-			Action: auth,
-		},
 		// droplets
 		{
 			Name:   "droplets",

@@ -7,8 +7,6 @@ import (
 )
 
 func images(c *cli.Context) {
-	auth(c)
-
 	filter := "my_images"
 	if c.Bool("global") {
 		filter = "global"

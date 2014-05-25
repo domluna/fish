@@ -11,7 +11,6 @@ import (
 )
 
 func keys(c *cli.Context) {
-	auth(c)
 
 	args := c.Args()
 	// show all keys then exit
@@ -49,7 +48,6 @@ func showKey(id int) {
 }
 
 func addKey(c *cli.Context) {
-	auth(c)
 	args := c.Args()
 
 	if len(args) < 1 {
@@ -78,7 +76,6 @@ func addKey(c *cli.Context) {
 }
 
 func rmKey(c *cli.Context) {
-	auth(c)
 	args := c.Args()
 
 	if len(args) < 1 {

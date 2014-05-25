@@ -7,8 +7,6 @@ import (
 )
 
 func regions(c *cli.Context) {
-	auth(c)
-
 	args := c.Args()
 	if len(args) != 0 {
 		fatalf("%s takes no arguments", "regions")

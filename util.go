@@ -29,9 +29,8 @@ func fatalf(format string, v ...interface{}) {
 
 // For authenticating the configuration variables,
 // client id and api key mainly.
-func auth(c *cli.Context) {
-	path := c.String("configFile")
-	err := dogo.LoadConfig(path)
+func auth() {
+	err := dogo.LoadConfig("")
 	if err != nil {
 		fatalf(err.Error())
 	}

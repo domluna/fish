@@ -8,7 +8,6 @@ import (
 )
 
 func droplets(c *cli.Context) {
-	auth(c)
 	droplets, err := dogo.GetDroplets()
 	if err != nil {
 		fatalf(err.Error())
@@ -26,7 +25,6 @@ func droplets(c *cli.Context) {
 }
 
 func create(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	name := c.Args().First()
@@ -45,7 +43,6 @@ func create(c *cli.Context) {
 }
 
 func destroy(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -62,7 +59,6 @@ func destroy(c *cli.Context) {
 }
 
 func resize(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -80,7 +76,6 @@ func resize(c *cli.Context) {
 }
 
 func reboot(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -96,7 +91,6 @@ func reboot(c *cli.Context) {
 }
 
 func rebuild(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -114,7 +108,6 @@ func rebuild(c *cli.Context) {
 }
 
 func stop(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -130,7 +123,6 @@ func stop(c *cli.Context) {
 }
 
 func start(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -146,7 +138,6 @@ func start(c *cli.Context) {
 }
 
 func snapshot(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -164,7 +155,6 @@ func snapshot(c *cli.Context) {
 }
 
 func restore(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -182,7 +172,6 @@ func restore(c *cli.Context) {
 }
 
 func info(c *cli.Context) {
-	auth(c)
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
