@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Niessy/fisherman/api/v1"
+	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
 )
 
