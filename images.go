@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
+	"github.com/Niessy/dogo"
 )
 
 func images(c *cli.Context) {
@@ -15,7 +14,7 @@ func images(c *cli.Context) {
 		filter = "global"
 	}
 
-	images, err := v1.GetImages(filter)
+	images, err := dogo.GetImages(filter)
 	if err != nil {
 		fatalf(err.Error())
 	}

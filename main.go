@@ -106,8 +106,8 @@ func main() {
 		},
 		// resize droplet
 		{
-			Name:  "resize",
-			Usage: "Resize a droplet",
+			Name:        "resize",
+			Usage:       "Resize a droplet",
 			Description: "First arg is the droplet id",
 			Flags: []cli.Flag{
 				cli.StringFlag{"size, s", "", "size slug, Ex. 512MB, 1GB"},
@@ -116,8 +116,8 @@ func main() {
 		},
 		// reboot droplet
 		{
-			Name:  "reboot",
-			Usage: "Reboot a droplet",
+			Name:   "reboot",
+			Usage:  "Reboot a droplet",
 			Action: reboot,
 		},
 		// rebuild droplet
@@ -131,14 +131,14 @@ func main() {
 		},
 		// stop droplet
 		{
-			Name:  "stop",
-			Usage: "Power off a droplet",
+			Name:   "stop",
+			Usage:  "Power off a droplet",
 			Action: stop,
 		},
 		// start droplet
 		{
-			Name:  "start",
-			Usage: "Power on a droplet",
+			Name:   "start",
+			Usage:  "Power on a droplet",
 			Action: start,
 		},
 		// snapshot droplet
@@ -161,8 +161,8 @@ func main() {
 		},
 		// info droplet
 		{
-			Name:  "info",
-			Usage: "Detailed info about a droplet",
+			Name:   "info",
+			Usage:  "Detailed info about a droplet",
 			Action: info,
 		},
 	}

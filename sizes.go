@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
+	"github.com/Niessy/dogo"
 )
 
 func sizes(c *cli.Context) {
 	auth(c)
-	sizes, err := v1.GetSizes()
+	sizes, err := dogo.GetSizes()
 	if err != nil {
 		fatalf(err.Error())
 	}

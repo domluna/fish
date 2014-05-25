@@ -5,9 +5,8 @@ import (
 	"os"
 	"path"
 	"strings"
-
-	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
+	"github.com/Niessy/dogo"
 )
 
 // Cleans a filepath and replaces enviroment variables
@@ -32,7 +31,7 @@ func fatalf(format string, v ...interface{}) {
 // client id and api key mainly.
 func auth(c *cli.Context) {
 	path := c.String("configFile")
-	err := v1.LoadConfig(path)
+	err := dogo.LoadConfig(path)
 	if err != nil {
 		fatalf(err.Error())
 	}

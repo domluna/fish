@@ -3,14 +3,13 @@ package main
 import (
 	"fmt"
 	"strconv"
-
 	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
 )
 
 func droplets(c *cli.Context) {
 	auth(c)
-	droplets, err := v1.GetDroplets()
+	droplets, err := dogo.GetDroplets()
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -37,7 +36,7 @@ func create(c *cli.Context) {
 	rID := c.Int("region")
 	keys := c.String("keys")
 
-	droplet, err := v1.CreateDroplet(name, sID, iID, rID, keys)
+	droplet, err := dogo.CreateDroplet(name, sID, iID, rID, keys)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -54,7 +53,7 @@ func destroy(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = v1.DestroyDroplet(id)
+	err = dogo.DestroyDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -73,7 +72,7 @@ func resize(c *cli.Context) {
 
 	slug := c.String("size")
 
-	err = v1.ResizeDroplet(id, slug)
+	err = dogo.ResizeDroplet(id, slug)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -89,7 +88,7 @@ func reboot(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = v1.RebootDroplet(id)
+	err = dogo.RebootDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -107,7 +106,7 @@ func rebuild(c *cli.Context) {
 
 	image := c.Int("image")
 
-	err = v1.RebuildDroplet(id, image)
+	err = dogo.RebuildDroplet(id, image)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -123,7 +122,7 @@ func stop(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = v1.StopDroplet(id)
+	err = dogo.StopDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -139,7 +138,7 @@ func start(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = v1.StartDroplet(id)
+	err = dogo.StartDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -157,7 +156,7 @@ func snapshot(c *cli.Context) {
 
 	name := c.String("name")
 
-	err = v1.SnapshotDroplet(id, name)
+	err = dogo.SnapshotDroplet(id, name)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -175,7 +174,7 @@ func restore(c *cli.Context) {
 
 	image := c.Int("image")
 
-	err = v1.RestoreDroplet(id, image)
+	err = dogo.RestoreDroplet(id, image)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -191,7 +190,7 @@ func info(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	droplet, err := v1.GetDroplet(id)
+	droplet, err := dogo.GetDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}

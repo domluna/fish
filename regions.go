@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
+	"github.com/Niessy/dogo"
 )
 
 func regions(c *cli.Context) {
@@ -15,7 +14,7 @@ func regions(c *cli.Context) {
 		fatalf("%s takes no arguments", "regions")
 	}
 
-	regions, err := v1.GetRegions()
+	regions, err := dogo.GetRegions()
 	if err != nil {
 		fatalf(err.Error())
 	}

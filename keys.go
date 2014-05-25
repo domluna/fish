@@ -6,9 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"strconv"
-
-	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
+	"github.com/Niessy/dogo"
 )
 
 func keys(c *cli.Context) {
@@ -30,7 +29,7 @@ func keys(c *cli.Context) {
 }
 
 func allKeys() {
-	keys, err := v1.GetSSHKeys()
+	keys, err := dogo.GetSSHKeys()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,7 +41,7 @@ func allKeys() {
 }
 
 func showKey(id int) {
-	key, err := v1.GetSSHKey(id)
+	key, err := dogo.GetSSHKey(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -71,7 +70,7 @@ func addKey(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	key, err := v1.AddSSHKey(name, string(buf))
+	key, err := dogo.AddSSHKey(name, string(buf))
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -94,7 +93,7 @@ func rmKey(c *cli.Context) {
 
 	println(id)
 
-	err = v1.DestroySSHKey(id)
+	err = dogo.DestroySSHKey(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
