@@ -17,6 +17,7 @@ type Droplet struct {
 	BackupsActive    bool      `json:"backups_active"`
 	IPAddress        string    `json:"ip_address"`
 	PrivateIPAddress string    `json:"private_ip_address"`
+	Snapshots        []Image `json:"snapshots"`
 	Locked           bool      `json:"locked"`
 	Status           string    `json:"status"`
 	CreatedAt        time.Time `json:"created_at"`
@@ -65,6 +66,8 @@ func GetDroplet(id int) (Droplet, error) {
 	if err != nil {
 		return Droplet{}, err
 	}
+
+	fmt.Println(string(body))
 
 	resp := struct {
 		Status     string  `json:"status"`
@@ -218,7 +221,7 @@ func RebootDroplet(id int) error {
 // RebootDroplet rebuilds a droplet with a default image. This can be
 // useful if you want to use a different image but keep the ip address
 // of the droplet.
-func RebuildDroplet(imageID, id int) error {
+func RebuildDroplet(id, imageID int) error {
 	query := fmt.Sprintf("%s/%d/rebuild/?image_id=%d&client_id=%s&api_key=%s",
 		DropletsEndpoint,
 		id,

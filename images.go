@@ -20,7 +20,13 @@ func images(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	println("Images:")
+	switch filter {
+	case "global":
+		fmt.Println("Global Images:")
+	default:
+		fmt.Println("My Images:")
+	}
+
 	for _, i := range images {
 		fmt.Printf("%s (distribution: %s id: %d)\n",
 			i.Name,

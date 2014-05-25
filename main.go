@@ -124,6 +124,9 @@ func main() {
 		{
 			Name:  "rebuild",
 			Usage: "Rebuilds a droplet with a default image, keeps ip address",
+			Flags: []cli.Flag{
+				cli.IntFlag{"image, i", 0, "Image id to rebuild as"},
+			},
 			Action: rebuild,
 		},
 		// stop droplet

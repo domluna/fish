@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/Niessy/fisherman/api/v1"
@@ -28,13 +29,9 @@ func droplets(c *cli.Context) {
 
 func create(c *cli.Context) {
 	auth(c)
-	args := c.Args()
-	if len(args) < 1 {
-		cli.ShowCommandHelp(c, c.Command.Name)
-		return
-	}
+	checkArgs(c)
 
-	name := args[0]
+	name := c.Args().First()
 
 	iID := c.Int("image")
 	sID := c.Int("size")
@@ -51,13 +48,9 @@ func create(c *cli.Context) {
 
 func destroy(c *cli.Context) {
 	auth(c)
-	args := c.Args()
-	if len(args) < 1 {
-		cli.ShowCommandHelp(c, c.Command.Name)
-		return
-	}
+	checkArgs(c)
 
-	id, err := strconv.Atoi(args[0])
+	id, err := strconv.Atoi(c.Args().First())
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -72,14 +65,9 @@ func destroy(c *cli.Context) {
 
 func resize(c *cli.Context) {
 	auth(c)
-	args := c.Args()
-	if len(args) < 1 {
-		fmt.Printf("Incorrect Usage\n")
-		cli.ShowCommandHelp(c, c.Command.Name)
-		return
-	}
+	checkArgs(c)
 
-	id, err := strconv.Atoi(args[0])
+	id, err := strconv.Atoi(c.Args().First())
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -95,14 +83,9 @@ func resize(c *cli.Context) {
 
 func reboot(c *cli.Context) {
 	auth(c)
-	args := c.Args()
-	if len(args) < 1 {
-		fmt.Printf("Incorrect Usage\n")
-		cli.ShowCommandHelp(c, c.Command.Name)
-		return
-	}
+	checkArgs(c)
 
-	id, err := strconv.Atoi(args[0])
+	id, err := strconv.Atoi(c.Args().First())
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -116,19 +99,118 @@ func reboot(c *cli.Context) {
 
 func rebuild(c *cli.Context) {
 	auth(c)
+	checkArgs(c)
+
+	id, err := strconv.Atoi(c.Args().First())
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	image := c.Int("image")
+
+	err = v1.RebuildDroplet(id, image)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Printf("Rebuilding droplet\n")
 }
 
 func stop(c *cli.Context) {
 	auth(c)
+	checkArgs(c)
+
+	id, err := strconv.Atoi(c.Args().First())
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	err = v1.StopDroplet(id)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Println("Stopped Droplet")
 }
 
 func start(c *cli.Context) {
 	auth(c)
+	checkArgs(c)
+
+	id, err := strconv.Atoi(c.Args().First())
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	err = v1.StartDroplet(id)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Println("Started Droplet")
 }
 
 func snapshot(c *cli.Context) {
 	auth(c)
+	checkArgs(c)
+
+	id, err := strconv.Atoi(c.Args().First())
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	err = v1.StartDroplet(id)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Println("Started Droplet")
+}
+
+func restore(c *cli.Context) {
+	auth(c)
+	checkArgs(c)
+
+	id, err := strconv.Atoi(c.Args().First())
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	err = v1.StartDroplet(id)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Println("Started Droplet")
 }
 
 func info(c *cli.Context) {
+	auth(c)
+	checkArgs(c)
+
+	id, err := strconv.Atoi(c.Args().First())
+	if err != nil {
+		fatalf(err.Error())
+	}
+
+	droplet, err := v1.GetDroplet(id)
+	if err != nil {
+		fatalf(err.Error())
+	}
+	fmt.Printf("Droplet:\t %s\n", droplet.Name)
+	fmt.Printf("ID:\t %d\n", droplet.ID)
+	fmt.Printf("Image ID:\t %d\n", droplet.ImageID)
+	fmt.Printf("Size ID:\t %d\n", droplet.SizeID)
+	fmt.Printf("Region ID:\t %d\n", droplet.RegionID)
+	fmt.Printf("Backups Active:\t %t\n", droplet.BackupsActive)
+	fmt.Printf("IP Address:\t %q\n", droplet.IPAddress)
+	fmt.Printf("Private IP Address:\t %q\n", droplet.PrivateIPAddress)
+	fmt.Printf("Locked:\t %t\n", droplet.Locked)
+	fmt.Printf("Status:\t %s\n", droplet.Status)
+	fmt.Printf("Created At:\t %v\n", droplet.CreatedAt)
+}
+
+// checkArgs makes sure there's a first argument. If used
+// incorrectly will output help and exit.
+func checkArgs(c *cli.Context) {
+	if len(c.Args()) < 1 {
+		fmt.Printf("Incorrect Usage\n")
+		cli.ShowCommandHelp(c, c.Command.Name)
+		os.Exit(1)
+	}
 }
