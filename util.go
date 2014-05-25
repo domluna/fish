@@ -37,3 +37,13 @@ func auth(c *cli.Context) {
 		fatalf(err.Error())
 	}
 }
+
+// checkArgs makes sure there's a first argument. If used
+// incorrectly will output help and exit.
+func checkArgs(c *cli.Context) {
+	if len(c.Args()) < 1 {
+		fmt.Printf("Incorrect Usage\n")
+		cli.ShowCommandHelp(c, c.Command.Name)
+		os.Exit(1)
+	}
+}

@@ -125,32 +125,44 @@ func main() {
 			Name:  "rebuild",
 			Usage: "Rebuilds a droplet with a default image, keeps ip address",
 			Flags: []cli.Flag{
-				cli.IntFlag{"image, i", 0, "Image id to rebuild as"},
+				cli.IntFlag{"image, i", 0, "Image id to rebuild"},
 			},
 			Action: rebuild,
 		},
 		// stop droplet
 		{
 			Name:  "stop",
-			Usage: "Shutdown a droplet",
+			Usage: "Power off a droplet",
 			Action: stop,
 		},
 		// start droplet
 		{
 			Name:  "start",
-			Usage: "Start up a droplet",
+			Usage: "Power on a droplet",
 			Action: start,
 		},
 		// snapshot droplet
 		{
 			Name:  "snapshot",
-			Usage: "Snapshot a droplet",
+			Usage: "Take a snapshot of a current droplet",
+			Flags: []cli.Flag{
+				cli.StringFlag{"name, n", "", "Name of the snapshot image"},
+			},
 			Action: snapshot,
+		},
+		// restore droplet
+		{
+			Name:  "restore",
+			Usage: "Restores a droplet with a previous image/snapshot",
+			Flags: []cli.Flag{
+				cli.IntFlag{"image, i", 0, "Image id to restore"},
+			},
+			Action: restore,
 		},
 		// info droplet
 		{
 			Name:  "info",
-			Usage: "Gives detailed droplet info",
+			Usage: "Detailed info about a droplet",
 			Action: info,
 		},
 	}

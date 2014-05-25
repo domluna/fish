@@ -1,22 +1,17 @@
-fisherman
+fish
 ----------------
 
-CLI for interacting with DigitalOcean.
+fish is a Command Line Tool for interacting with DigitalOcean.
 
-Query from a url, similarly shaped in most cases.
-Get JSON response and output it.
+The 
 
-Can I do this with less repitition with an interface{} ?
+### Examples
 
-TODO before viable:
+### Installation
 
-1) fuzzy matching: doing things with ids is not fun and kind of
-annoying.
+If you have Go on your system you can install it directly.
 
-2) when done put api in a seperate directory
+Binaries for platforms can be downloaded from the Wiki.
 
-4) Rethink configuration situation
 
-Some observations:
 
-The query parameters don't matter for the api only reads the parameters it needs for that particular endpoint. Thus I could have a generic string with all the parameters, help reduce code.

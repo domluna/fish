@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/Niessy/fisherman/api/v1"
@@ -17,7 +16,7 @@ func droplets(c *cli.Context) {
 	}
 	println("Droplets:")
 	for _, d := range droplets {
-		fmt.Printf("%s (id %d region: %d image_id: %d ip: \"%s\" status: %s)\n",
+		fmt.Printf("%s (id: %d region: %d image_id: %d ip: %q status: %s)\n",
 			d.Name,
 			d.ID,
 			d.RegionID,
@@ -78,7 +77,7 @@ func resize(c *cli.Context) {
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Printf("resizing droplet\n")
+	fmt.Printf("Resizing droplet\n")
 }
 
 func reboot(c *cli.Context) {
@@ -156,11 +155,13 @@ func snapshot(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = v1.StartDroplet(id)
+	name := c.String("name")
+
+	err = v1.SnapshotDroplet(id, name)
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Println("Started Droplet")
+	fmt.Printf("Created a snapshot, name = %s\n", name)
 }
 
 func restore(c *cli.Context) {
@@ -172,11 +173,13 @@ func restore(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = v1.StartDroplet(id)
+	image := c.Int("image")
+
+	err = v1.RestoreDroplet(id, image)
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Println("Started Droplet")
+	fmt.Println("Restored Droplet with image id = %d", image)
 }
 
 func info(c *cli.Context) {
@@ -203,14 +206,4 @@ func info(c *cli.Context) {
 	fmt.Printf("Locked:\t %t\n", droplet.Locked)
 	fmt.Printf("Status:\t %s\n", droplet.Status)
 	fmt.Printf("Created At:\t %v\n", droplet.CreatedAt)
-}
-
-// checkArgs makes sure there's a first argument. If used
-// incorrectly will output help and exit.
-func checkArgs(c *cli.Context) {
-	if len(c.Args()) < 1 {
-		fmt.Printf("Incorrect Usage\n")
-		cli.ShowCommandHelp(c, c.Command.Name)
-		os.Exit(1)
-	}
 }

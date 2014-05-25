@@ -17,7 +17,7 @@ type Droplet struct {
 	BackupsActive    bool      `json:"backups_active"`
 	IPAddress        string    `json:"ip_address"`
 	PrivateIPAddress string    `json:"private_ip_address"`
-	Snapshots        []Image `json:"snapshots"`
+	Snapshots        []Image   `json:"snapshots"`
 	Locked           bool      `json:"locked"`
 	Status           string    `json:"status"`
 	CreatedAt        time.Time `json:"created_at"`
@@ -162,8 +162,6 @@ func ResizeDroplet(id int, slug string) error {
 		slug,
 		config.Conf.ClientID,
 		config.Conf.APIKey)
-
-	fmt.Println(query)
 
 	body, err := sendQuery(query)
 	if err != nil {
@@ -314,11 +312,44 @@ func StartDroplet(id int) error {
 
 // SnapshotDroplet allows you to take a snapshot of a droplet once it is
 // powered off. Be aware this may reboot the droplet.
-func SnapshotDroplet(name string, id int) error {
+func SnapshotDroplet(id int, name string) error {
 	query := fmt.Sprintf("%s/%d/snapshot/?name=%s&client_id=%s&api_key=%s",
 		DropletsEndpoint,
 		id,
 		name,
+		config.Conf.ClientID,
+		config.Conf.APIKey)
+
+	body, err := sendQuery(query)
+	if err != nil {
+		return err
+	}
+
+	resp := struct {
+		Status     string `json:"status"`
+		ErrMessage string `json:"error_message"`
+	}{}
+
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return err
+	}
+
+	if resp.Status == "ERROR" {
+		return errors.New(resp.ErrMessage)
+	}
+
+	return nil
+}
+
+// RestoreDroplet allows you to restore a droplet to a previous image
+// or snapshot. This will be a mirror copy of the image or snapshot to
+// your droplet.
+func RestoreDroplet(id, imageID int) error {
+	query := fmt.Sprintf("%s/%d/restore/?image_id=%d&client_id=%s&api_key=%s",
+		DropletsEndpoint,
+		id,
+		imageID,
 		config.Conf.ClientID,
 		config.Conf.APIKey)
 
