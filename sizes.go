@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/codegangsta/cli"
-	"github.com/Niessy/dogo"
 )
 
 func sizes(c *cli.Context) {
-	sizes, err := dogo.GetSizes()
+	sizes, err := docli.GetSizes()
 	if err != nil {
 		fatalf(err.Error())
 	}

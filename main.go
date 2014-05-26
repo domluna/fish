@@ -10,8 +10,14 @@ import (
 	"github.com/Niessy/dogo"
 )
 
+var docli *dogo.Client
+
 func init() {
-	dogo.LoadConfig("")
+	// Load the configuration in $HOME/.fish
+	loadConfig()
+	auth := dogo.Auth{config.Conf.ClientID, config.Conf.APIKey}
+	docli = dogo.NewClient(auth)
+
 }
 
 func main() {

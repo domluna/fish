@@ -6,29 +6,12 @@ import (
 	"io/ioutil"
 	"log"
 	"strconv"
+
 	"github.com/codegangsta/cli"
-	"github.com/Niessy/dogo"
 )
 
 func keys(c *cli.Context) {
-
-	args := c.Args()
-	// show all keys then exit
-	if len(args) == 0 {
-		allKeys()
-		return
-	}
-
-	id, err := strconv.Atoi(args[0])
-	if err != nil {
-		fatalf(err.Error())
-	}
-	showKey(id)
-
-}
-
-func allKeys() {
-	keys, err := dogo.GetSSHKeys()
+	keys, err := docli.GetSSHKeys()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,11 +19,10 @@ func allKeys() {
 	for _, k := range keys {
 		fmt.Printf("%s (id: %d)\n", k.Name, k.ID)
 	}
-	fmt.Println()
 }
 
 func showKey(id int) {
-	key, err := dogo.GetSSHKey(id)
+	key, err := docli.GetSSHKey(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -68,7 +50,7 @@ func addKey(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	key, err := dogo.AddSSHKey(name, string(buf))
+	key, err := docli.AddSSHKey(name, string(buf))
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -90,7 +72,7 @@ func rmKey(c *cli.Context) {
 
 	println(id)
 
-	err = dogo.DestroySSHKey(id)
+	err = docli.DestroySSHKey(id)
 	if err != nil {
 		fatalf(err.Error())
 	}

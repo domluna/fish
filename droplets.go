@@ -3,12 +3,11 @@ package main
 import (
 	"fmt"
 	"strconv"
-	"github.com/Niessy/dogo"
 	"github.com/codegangsta/cli"
 )
 
 func droplets(c *cli.Context) {
-	droplets, err := dogo.GetDroplets()
+	droplets, err := docli.GetDroplets()
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -26,7 +25,6 @@ func droplets(c *cli.Context) {
 
 func create(c *cli.Context) {
 	checkArgs(c)
-
 	name := c.Args().First()
 
 	iID := c.Int("image")
@@ -34,10 +32,11 @@ func create(c *cli.Context) {
 	rID := c.Int("region")
 	keys := c.String("keys")
 
-	droplet, err := dogo.CreateDroplet(name, sID, iID, rID, keys)
+	droplet, err := docli.CreateDroplet(name, sID, iID, rID, keys)
 	if err != nil {
 		fatalf(err.Error())
 	}
+
 	fmt.Printf("Successfully queued %s for creation ... \n", name)
 	fmt.Printf("%v\n", droplet)
 }
@@ -50,7 +49,7 @@ func destroy(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = dogo.DestroyDroplet(id)
+	err = docli.DestroyDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -68,7 +67,7 @@ func resize(c *cli.Context) {
 
 	slug := c.String("size")
 
-	err = dogo.ResizeDroplet(id, slug)
+	err = docli.ResizeDroplet(id, slug)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -83,7 +82,8 @@ func reboot(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = dogo.RebootDroplet(id)
+
+	err = docli.RebootDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -100,7 +100,7 @@ func rebuild(c *cli.Context) {
 
 	image := c.Int("image")
 
-	err = dogo.RebuildDroplet(id, image)
+	err = docli.RebuildDroplet(id, image)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -115,7 +115,7 @@ func stop(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = dogo.StopDroplet(id)
+	err = docli.StopDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -130,7 +130,7 @@ func start(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = dogo.StartDroplet(id)
+	err = docli.StartDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -147,7 +147,7 @@ func snapshot(c *cli.Context) {
 
 	name := c.String("name")
 
-	err = dogo.SnapshotDroplet(id, name)
+	err = docli.SnapshotDroplet(id, name)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -164,7 +164,7 @@ func restore(c *cli.Context) {
 
 	image := c.Int("image")
 
-	err = dogo.RestoreDroplet(id, image)
+	err = docli.RestoreDroplet(id, image)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -179,7 +179,7 @@ func info(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	droplet, err := dogo.GetDroplet(id)
+	droplet, err := docli.GetDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}

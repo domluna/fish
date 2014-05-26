@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/codegangsta/cli"
-	"github.com/Niessy/dogo"
 )
 
 func images(c *cli.Context) {
@@ -12,7 +11,7 @@ func images(c *cli.Context) {
 		filter = "global"
 	}
 
-	images, err := dogo.GetImages(filter)
+	images, err := docli.GetImages(filter)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -27,7 +26,7 @@ func images(c *cli.Context) {
 	for _, i := range images {
 		fmt.Printf("%s (distribution: %s id: %d)\n",
 			i.Name,
-			i.Distribution,
+			i.Slug,
 			i.ID)
 	}
 }

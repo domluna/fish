@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/codegangsta/cli"
-	"github.com/Niessy/dogo"
 )
 
 func regions(c *cli.Context) {
@@ -12,7 +11,7 @@ func regions(c *cli.Context) {
 		fatalf("%s takes no arguments", "regions")
 	}
 
-	regions, err := dogo.GetRegions()
+	regions, err := docli.GetRegions()
 	if err != nil {
 		fatalf(err.Error())
 	}
