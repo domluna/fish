@@ -31,7 +31,7 @@ func create(c *cli.Context) {
 	iID := c.Int("image")
 	sID := dogo.SizesMap[c.String("size")]
 	rID := dogo.RegionsMap[c.String("region")]
-	keys := c.String("keys")
+	keys := c.IntSlice("keys")
 
 	droplet, err := docli.CreateDroplet(name, sID, iID, rID, keys)
 	if err != nil {
@@ -39,7 +39,6 @@ func create(c *cli.Context) {
 	}
 
 	fmt.Printf("Successfully queued %s for creation ... \n", name)
-	fmt.Printf("%v\n", droplet)
 }
 
 func destroy(c *cli.Context) {

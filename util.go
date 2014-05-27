@@ -29,7 +29,7 @@ func fatalf(format string, v ...interface{}) {
 // incorrectly will output help and exit.
 func checkArgs(c *cli.Context) {
 	if len(c.Args()) < 1 {
-		fmt.Printf("Incorrect Usage\n")
+		fmt.Printf("Arguments missing\n")
 		cli.ShowCommandHelp(c, c.Command.Name)
 		os.Exit(1)
 	}

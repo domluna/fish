@@ -8,17 +8,54 @@ can be found [here](https://cloud.digitalocean.com/api_access).
 Note that you can only view an api key ONCE, so make sure you write
 it down somewhere.
 
-fish reads your config info from $HOME/.fish
+### Configuration
+
+fish reads your config info from $HOME/.fish. See sample.config for a
+sample configuration.
+
+Alternatively you can use environment variables DIGITALOCEAN_CLIENT_ID
+and DIGITALOCEAN_API_KEY
 
 ### Examples
 
-Here are examples!
+To view all your droplets:
+
+```sh
+$ fish droplets
+$ ...
+```
+
+To view available sizes:
+
+```sh
+$ fish sizes
+$ ...
+```
+
+To view available regions:
+
+```sh
+$ fish regions
+$ ...
+```
+
+To view images:
+
+```sh
+$ fish images # these are your snapshots
+$ ...
+$ fish images -g # this enables all default DigitalOcean images
+```
+
+To view ssh keys:
+
+```sh
+$ fish keys
+$ ...
+```
 
 ### Installation
 
 If you have Go on your system you can install it directly.
 
 Binaries for platforms can be downloaded from the Wiki.
-
-
-
