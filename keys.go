@@ -50,7 +50,7 @@ func addKey(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	key, err := docli.AddSSHKey(name, string(buf))
+	key, err := docli.AddSSHKey(name, buf)
 	if err != nil {
 		fatalf(err.Error())
 	}

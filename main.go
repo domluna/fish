@@ -91,8 +91,8 @@ func main() {
 			Description: "First arg is the name of the droplet",
 			Flags: []cli.Flag{
 				cli.IntFlag{"image, i", 0, "image id"},
-				cli.IntFlag{"size, s", 0, "size id"},
-				cli.IntFlag{"region, r", 0, "region id"},
+				cli.StringFlag{"size, s", "", "size slug, ex: 512MB, 1GB"},
+				cli.StringFlag{"region, r", "", "region slug, ex: nyc2, ams1"},
 				cli.StringFlag{"keys, k", "", "ssh key ids, comma seperated"},
 				cli.BoolFlag{"network, n", "enable private networking"},
 				cli.BoolFlag{"backups, b", "enable backups"},
@@ -133,15 +133,15 @@ func main() {
 		},
 		// stop droplet
 		{
-			Name:   "stop",
+			Name:   "off",
 			Usage:  "Power off a droplet",
-			Action: stop,
+			Action: off,
 		},
 		// start droplet
 		{
-			Name:   "start",
+			Name:   "on",
 			Usage:  "Power on a droplet",
-			Action: start,
+			Action: on,
 		},
 		// snapshot droplet
 		{

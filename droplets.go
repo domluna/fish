@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"github.com/codegangsta/cli"
+	"github.com/Niessy/dogo"
 )
 
 func droplets(c *cli.Context) {
@@ -28,8 +29,8 @@ func create(c *cli.Context) {
 	name := c.Args().First()
 
 	iID := c.Int("image")
-	sID := c.Int("size")
-	rID := c.Int("region")
+	sID := dogo.SizesMap[c.String("size")]
+	rID := dogo.RegionsMap[c.String("region")]
 	keys := c.String("keys")
 
 	droplet, err := docli.CreateDroplet(name, sID, iID, rID, keys)
@@ -65,9 +66,9 @@ func resize(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	slug := c.String("size")
+	sizeID := dogo.SizesMap[c.String("size")]
 
-	err = docli.ResizeDroplet(id, slug)
+	err = docli.ResizeDroplet(id, sizeID)
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -107,7 +108,7 @@ func rebuild(c *cli.Context) {
 	fmt.Printf("Rebuilding droplet\n")
 }
 
-func stop(c *cli.Context) {
+func off(c *cli.Context) {
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())
@@ -122,7 +123,7 @@ func stop(c *cli.Context) {
 	fmt.Println("Stopped Droplet")
 }
 
-func start(c *cli.Context) {
+func on(c *cli.Context) {
 	checkArgs(c)
 
 	id, err := strconv.Atoi(c.Args().First())

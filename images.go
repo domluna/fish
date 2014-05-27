@@ -24,7 +24,7 @@ func images(c *cli.Context) {
 	}
 
 	for _, i := range images {
-		fmt.Printf("%s (distribution: %s id: %d)\n",
+		fmt.Printf("%s (slug: %s id: %d)\n",
 			i.Name,
 			i.Slug,
 			i.ID)

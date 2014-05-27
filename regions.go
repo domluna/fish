@@ -18,6 +18,6 @@ func regions(c *cli.Context) {
 
 	println("Regions:")
 	for _, r := range regions {
-		fmt.Printf("%s (id: %d)\n", r.Name, r.ID)
+		fmt.Printf("%s (slug: %s id: %d)\n", r.Name, r.Slug, r.ID)
 	}
 }
