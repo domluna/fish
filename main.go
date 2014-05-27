@@ -90,9 +90,9 @@ func main() {
 			Usage:       "Create a new droplet",
 			Description: "First arg is the name of the droplet",
 			Flags: []cli.Flag{
-				cli.IntFlag{"image, i", 0, "image id"},
-				cli.StringFlag{"size, s", "", "size slug, ex: 512MB, 1GB"},
-				cli.StringFlag{"region, r", "", "region slug, ex: nyc2, ams1"},
+				cli.IntFlag{"image, i", 3668014, "image id, default: Docker Image"},
+				cli.StringFlag{"size, s", "512MB", "size slug, ex: 512MB, 1GB"},
+				cli.StringFlag{"region, r", "nyc2", "region slug, ex: nyc2, ams1"},
 				cli.BoolFlag{"network, n", "enable private networking"},
 				cli.BoolFlag{"backups, b", "enable backups"},
 				cli.IntSliceFlag{"keys, k", &cli.IntSlice{}, "ssh key ids"},
