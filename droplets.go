@@ -32,12 +32,13 @@ func create(c *cli.Context) {
 	sID := dogo.SizesMap[c.String("size")]
 	rID := dogo.RegionsMap[c.String("region")]
 	keys := c.IntSlice("keys")
+	pnet := c.BoolT("network")
+	backups := c.BoolT("backups")
 
-	droplet, err := docli.CreateDroplet(name, sID, iID, rID, keys)
+	_, err := docli.CreateDroplet(name, sID, iID, rID, keys, pnet, backups)
 	if err != nil {
 		fatalf(err.Error())
 	}
-
 	fmt.Printf("Successfully queued %s for creation ... \n", name)
 }
 
