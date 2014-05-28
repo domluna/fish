@@ -58,4 +58,11 @@ $ ...
 
 If you have Go on your system you can install it directly.
 
-Binaries for platforms can be downloaded from the Wiki.
+Binaries for platforms can be downloaded from the [Releases].
+
+### TODO
+
+* More examples
+* Finish login via ssh
+* Possible Fuzzy Matching on names instead of having to use ids
+
