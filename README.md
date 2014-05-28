@@ -58,7 +58,7 @@ $ ...
 
 If you have Go on your system you can install it directly.
 
-Binaries for platforms can be downloaded from the [Releases].
+Binaries for platforms can be downloaded from the [Releases](https://github.com/Niessy/fish/releases).
 
 ### TODO
 
