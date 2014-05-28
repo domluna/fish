@@ -26,20 +26,22 @@ func droplets(c *cli.Context) {
 
 func create(c *cli.Context) {
 	checkArgs(c)
-	name := c.Args().First()
 
-	iID := c.Int("image")
-	sID := dogo.SizesMap[c.String("size")]
-	rID := dogo.RegionsMap[c.String("region")]
+	d := dogo.Droplet{
+		Name: c.Args().First(),
+		ImageID: c.Int("image"),
+		SizeID: dogo.SizesMap[c.String("size")],
+		RegionID: dogo.RegionsMap[c.String("region")],
+		BackupsActive:c.BoolT("backups"),
+	}
 	keys := c.IntSlice("keys")
-	pnet := c.BoolT("network")
-	backups := c.BoolT("backups")
+	network := c.BoolT("network")
 
-	_, err := docli.CreateDroplet(name, sID, iID, rID, keys, pnet, backups)
+	_, err := docli.CreateDroplet(d, keys, network)
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Printf("Successfully queued %s for creation ... \n", name)
+	fmt.Printf("Successfully queued %s for creation ... \n", d.Name)
 }
 
 func destroy(c *cli.Context) {
