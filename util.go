@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/codegangsta/cli"
 	"os"
 	"path"
 	"strings"
-	"github.com/codegangsta/cli"
 )
 
 // Cleans a filepath and replaces enviroment variables

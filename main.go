@@ -6,16 +6,19 @@ package main
 import (
 	"os"
 
-	"github.com/codegangsta/cli"
 	"github.com/Niessy/dogo"
+	"github.com/codegangsta/cli"
 )
 
 var docli *dogo.Client
 
 func init() {
 	// Load the configuration in $HOME/.fish
-	loadConfig()
-	auth := dogo.Auth{config.conf.clientID, config.conf.apiKey}
+	err := loadConfig()
+	if err != nil {
+		panic(err)
+	}
+	auth := dogo.Auth{config.Conf.ClientID, config.Conf.APIKey}
 	docli = dogo.NewClient(auth)
 
 }
@@ -132,13 +135,13 @@ func main() {
 			},
 			Action: rebuild,
 		},
-		// stop droplet
+		// power off droplet
 		{
 			Name:   "off",
 			Usage:  "Power off a droplet",
 			Action: off,
 		},
-		// start droplet
+		// power on droplet
 		{
 			Name:   "on",
 			Usage:  "Power on a droplet",

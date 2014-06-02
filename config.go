@@ -17,22 +17,22 @@ var (
 
 // Config is the Configuration settings.
 type Config struct {
-	conf
-	defaults
+	Conf     conf
+	Defaults defaults
 }
 
 // Parsed configuration settings.
 type conf struct {
-	clientID string `toml:"client_id"`
-	apiKey   string `toml:"api_key"`
+	ClientID string `toml:"client_id"`
+	APIKey   string `toml:"api_key"`
 }
 
 type defaults struct {
-	size        string `toml:"size"`
-	image       int    `toml:"image"`
-	region      string `toml:"region"`
-	privNetwork bool   `toml:"private_network"`
-	backups     bool   `toml:"backups_enabled"`
+	Size           string `toml:"size"`
+	Region         string `toml:"region"`
+	Image          int    `toml:"image"`
+	PrivateNetwork bool   `toml:"private_network"`
+	Backups        bool   `toml:"backups_enabled"`
 }
 
 // Loads the configuration from the filepath. If there's any
@@ -48,6 +48,5 @@ func loadConfig() error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

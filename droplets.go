@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"github.com/codegangsta/cli"
 	"github.com/Niessy/dogo"
+	"github.com/codegangsta/cli"
+	"strconv"
 )
 
 func droplets(c *cli.Context) {
@@ -28,11 +28,11 @@ func create(c *cli.Context) {
 	checkArgs(c)
 
 	d := dogo.Droplet{
-		Name: c.Args().First(),
-		ImageID: c.Int("image"),
-		SizeID: dogo.SizesMap[c.String("size")],
-		RegionID: dogo.RegionsMap[c.String("region")],
-		BackupsActive:c.BoolT("backups"),
+		Name:          c.Args().First(),
+		ImageID:       c.Int("image"),
+		SizeID:        dogo.SizesMap[c.String("size")],
+		RegionID:      dogo.RegionsMap[c.String("region")],
+		BackupsActive: c.BoolT("backups"),
 	}
 	keys := c.IntSlice("keys")
 	network := c.BoolT("network")
@@ -85,7 +85,6 @@ func reboot(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-
 	err = docli.RebootDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
@@ -118,11 +117,11 @@ func off(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = docli.StopDroplet(id)
+	err = docli.PowerOffDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Println("Stopped Droplet")
+	fmt.Println("Powered Off Droplet")
 }
 
 func on(c *cli.Context) {
@@ -133,11 +132,11 @@ func on(c *cli.Context) {
 		fatalf(err.Error())
 	}
 
-	err = docli.StartDroplet(id)
+	err = docli.PowerOnDroplet(id)
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Println("Started Droplet")
+	fmt.Println("Powered On Droplet")
 }
 
 func snapshot(c *cli.Context) {
@@ -171,7 +170,7 @@ func restore(c *cli.Context) {
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Println("Restored Droplet with image id = %d", image)
+	fmt.Printf("Restored Droplet with image id = %d", image)
 }
 
 func info(c *cli.Context) {
