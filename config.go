@@ -17,13 +17,22 @@ var (
 
 // Config is the Configuration settings.
 type Config struct {
-	Conf conf
+	conf
+	defaults
 }
 
 // Parsed configuration settings.
 type conf struct {
-	ClientID string `toml:"client_id"`
-	APIKey   string `toml:"api_key"`
+	clientID string `toml:"client_id"`
+	apiKey   string `toml:"api_key"`
+}
+
+type defaults struct {
+	size        string `toml:"size"`
+	image       int    `toml:"image"`
+	region      string `toml:"region"`
+	privNetwork bool   `toml:"private_network"`
+	backups     bool   `toml:"backups_enabled"`
 }
 
 // Loads the configuration from the filepath. If there's any

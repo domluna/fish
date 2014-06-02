@@ -15,7 +15,7 @@ var docli *dogo.Client
 func init() {
 	// Load the configuration in $HOME/.fish
 	loadConfig()
-	auth := dogo.Auth{config.Conf.ClientID, config.Conf.APIKey}
+	auth := dogo.Auth{config.conf.clientID, config.conf.apiKey}
 	docli = dogo.NewClient(auth)
 
 }
@@ -25,6 +25,7 @@ func main() {
 	app.Name = "fish"
 	app.Author = "Dominique Luna"
 	app.Usage = "Command Line Interface for DigitalOcean"
+	app.Version = "v0.1.0"
 	app.Commands = []cli.Command{
 		// droplets
 		{
@@ -43,7 +44,7 @@ func main() {
 			Name:  "images",
 			Usage: "Lists all global or user images",
 			Flags: []cli.Flag{
-				cli.BoolFlag{"global, g", "show all DigitalOcean images"},
+				cli.BoolFlag{"global, g", "show all global images"},
 			},
 			Action: images,
 		},
