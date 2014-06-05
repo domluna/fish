@@ -131,10 +131,10 @@ func main() {
 		},
 		// reboot droplet
 		{
-			Name:   "reboot",
-			Usage:  "Reboot a droplet",
+			Name:        "reboot",
+			Usage:       "Reboot a droplet",
 			Description: "First arg is the droplet id",
-			Action: reboot,
+			Action:      reboot,
 		},
 		// rebuild droplet
 		{
