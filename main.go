@@ -10,17 +10,27 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// Client for interacting with dogo
 var docli *dogo.Client
 
 func init() {
-	// Load the configuration in $HOME/.fish
-	err := loadConfig()
-	if err != nil {
-		panic(err)
-	}
-	auth := dogo.Auth{config.Conf.ClientID, config.Conf.APIKey}
-	docli = dogo.NewClient(auth)
+	var auth dogo.Auth
+	var err error
 
+	// Load the configuration in $HOME/.fish
+	err = loadConfig()
+	if err != nil {
+		// No config file try from environment variables
+		// This wont have defaults
+		auth, err = dogo.EnvAuth()
+		if err != nil {
+			panic(err)
+		}
+		docli = dogo.NewClient(auth)
+		return
+	}
+	auth = dogo.Auth{config.Conf.ClientID, config.Conf.APIKey}
+	docli = dogo.NewClient(auth)
 }
 
 func main() {
@@ -57,12 +67,6 @@ func main() {
 			Usage:  "Lists all available droplet sizes",
 			Action: sizes,
 		},
-		// ssh keys
-		{
-			Name:   "keys",
-			Usage:  "Lists all user ssh keys",
-			Action: keys,
-		},
 		// add ssh key
 		{
 			Name:        "addkey",
@@ -94,9 +98,9 @@ func main() {
 			Usage:       "Create a new droplet",
 			Description: "First arg is the name of the droplet",
 			Flags: []cli.Flag{
-				cli.IntFlag{"image, i", 3668014, "image id, default: Docker Image"},
-				cli.StringFlag{"size, s", "512MB", "size slug, ex: 512MB, 1GB"},
-				cli.StringFlag{"region, r", "nyc2", "region slug, ex: nyc2, ams1"},
+				cli.IntFlag{"image, i", config.Defaults.Image, "image id, default: Docker Image"},
+				cli.StringFlag{"size, s", config.Defaults.Size, "size slug, ex: 512MB, 1GB"},
+				cli.StringFlag{"region, r", config.Defaults.Region, "region slug, ex: nyc2, ams1"},
 				cli.BoolTFlag{"network, n", "disable private networking"},
 				cli.BoolTFlag{"backups, b", "disable backups"},
 				cli.IntSliceFlag{"keys, k", &cli.IntSlice{}, "ssh key ids"},
@@ -116,7 +120,7 @@ func main() {
 			Usage:       "Resize a droplet",
 			Description: "First arg is the droplet id",
 			Flags: []cli.Flag{
-				cli.StringFlag{"size, s", "", "size slug, Ex. 512MB, 1GB"},
+				cli.StringFlag{"size, s", "1GB", "size slug, Ex. 512MB, 1GB"},
 			},
 			Action: resize,
 		},
