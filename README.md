@@ -54,6 +54,64 @@ $ fish keys
 $ ...
 ```
 
+To get the plaintext for a key:
+
+```sh
+$ fish showkey 1234 # key id is 1234 
+```
+
+To add an ssh key to your list of keys:
+
+```sh
+$ fish addkey newkey -p ~/.ssh/somekey.pub # the key's name is newkey
+```
+
+To remove a remote ssh key:
+
+```sh
+$ fish rmkey 1234 # key id is 1234
+```
+
+To create a droplet:
+This create a droplet with the name droppy, the image id is 3668014,
+the size is 512MB the region if New York 2 and you have login remotely
+via ssh keys 1234 or 888 ( these are the remote key ids ).
+
+```sh
+fish create droppy -i 3668014 -s "512MB" -r "nyc2" -k 1234 -k 888
+```
+
+To destroy a droplet:
+
+```sh
+fish destroy 1111 # droplet id is 1111
+```
+
+The commands `reboot`, `on`, `off`, and `info` are similar to `destroy` in usage.  
+
+To snapshot a droplet:
+NOTE: the droplet should be powered off, do this with the `off` command.
+
+```sh
+fish snapshot 1111 -n snapshotname
+```
+
+To rebuild a droplet with a new image id (this keeps the ip address):
+
+```sh
+fish rebuild 1111 -i 4444 # 4444 is the new image id
+```
+
+The command `restore` is similar to rebuild, an important distinction is
+restore can only use previous images or snapshots that machine had.
+
+To resize a droplet:
+
+```sh
+$ fish resize 1111 -s "1GB" # 1GB is the new size of the droplet
+```
+
+
 ### Installation
 
 If you have Go on your system you can install it directly.

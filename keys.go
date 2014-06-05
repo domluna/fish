@@ -21,7 +21,14 @@ func keys(c *cli.Context) {
 	}
 }
 
-func showKey(id int) {
+func showKey(c *cli.Context) {
+	checkArgs(c)
+
+	id, err := strconv.Atoi(c.Args().First())
+	if err != nil {
+		fatalf(err.Error())
+	}
+
 	key, err := docli.GetSSHKey(id)
 	if err != nil {
 		fatalf(err.Error())
@@ -30,14 +37,9 @@ func showKey(id int) {
 }
 
 func addKey(c *cli.Context) {
-	args := c.Args()
+	checkArgs(c)
 
-	if len(args) < 1 {
-		cli.ShowCommandHelp(c, c.Command.Name)
-		return
-	}
-
-	name := args[0]
+	name := c.Args().First()
 	kp := c.String("path")
 
 	if kp == "" {
@@ -58,14 +60,9 @@ func addKey(c *cli.Context) {
 }
 
 func rmKey(c *cli.Context) {
-	args := c.Args()
+	checkArgs(c)
 
-	if len(args) < 1 {
-		cli.ShowCommandHelp(c, c.Command.Name)
-		return
-	}
-
-	id, err := strconv.Atoi(args[0])
+	id, err := strconv.Atoi(c.Args().First())
 	if err != nil {
 		fatalf(err.Error())
 	}
@@ -76,5 +73,5 @@ func rmKey(c *cli.Context) {
 	if err != nil {
 		fatalf(err.Error())
 	}
-	fmt.Printf("Queued removal of ssh key (id: %d)\n", id)
+	fmt.Printf("Queued removal of ssh key\n")
 }

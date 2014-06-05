@@ -49,7 +49,7 @@ func main() {
 		// regions
 		{
 			Name:   "regions",
-			Usage:  "List all regions",
+			Usage:  "List all available regions",
 			Action: regions,
 		},
 		// images
@@ -66,6 +66,12 @@ func main() {
 			Name:   "sizes",
 			Usage:  "Lists all available droplet sizes",
 			Action: sizes,
+		},
+		// show all ssh keys
+		{
+			Name:   "keys",
+			Usage:  "Shows all remote ssh keys",
+			Action: keys,
 		},
 		// add ssh key
 		{
@@ -84,13 +90,12 @@ func main() {
 			Description: "First arg is the key id",
 			Action:      rmKey,
 		},
-		// ssh access to digitalocean servers
+		// info about a key
 		{
-			Name:  "ssh",
-			Usage: "Access DigitalOcean servers via ssh",
-			Action: func(c *cli.Context) {
-				println("Not implemented yet!")
-			},
+			Name:        "showkey",
+			Usage:       "Shows the public key for a specific key",
+			Description: "First arg is the key id",
+			Action:      showKey,
 		},
 		// create droplet
 		{
@@ -128,6 +133,7 @@ func main() {
 		{
 			Name:   "reboot",
 			Usage:  "Reboot a droplet",
+			Description: "First arg is the droplet id",
 			Action: reboot,
 		},
 		// rebuild droplet
@@ -154,7 +160,7 @@ func main() {
 		// snapshot droplet
 		{
 			Name:  "snapshot",
-			Usage: "Take a snapshot of a current droplet",
+			Usage: "Take a snapshot of a current droplet, requires power off",
 			Flags: []cli.Flag{
 				cli.StringFlag{"name, n", "", "Name of the snapshot image"},
 			},

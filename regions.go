@@ -6,11 +6,6 @@ import (
 )
 
 func regions(c *cli.Context) {
-	args := c.Args()
-	if len(args) != 0 {
-		fatalf("%s takes no arguments", "regions")
-	}
-
 	regions, err := docli.GetRegions()
 	if err != nil {
 		fatalf(err.Error())
