@@ -120,7 +120,5 @@ Binaries for platforms can be downloaded from the [Releases](https://github.com/
 
 ### TODO
 
-* More examples
-* defaults
 * Possible Fuzzy Matching on names instead of having to use ids
 
