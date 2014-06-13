@@ -118,6 +118,12 @@ If you have Go on your system you can install it directly.
 
 Binaries for platforms can be downloaded from the [Releases](https://github.com/Niessy/fish/releases).
 
+NOTE for Windows
+
+1. Download MSYS from: http://mingw.org/wiki/msys
+2. Run msys.bat in msys directory
+3. type in commands: "fish ..."
+
 ### TODO
 
 * Possible Fuzzy Matching on names instead of having to use ids
