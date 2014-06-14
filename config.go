@@ -1,19 +1,26 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
-
 	"github.com/BurntSushi/toml"
+	"io/ioutil"
+	"os/user"
+	"path"
 )
 
 // File that user information such as client id and
 // api keys will be written to.
 var (
-	configFile = fmt.Sprintf("%s/.fish", os.ExpandEnv("$HOME"))
+	configFile string
 	config     Config
 )
+
+func init() {
+	var u *user.User
+	if u, _ = user.Current(); u == nil {
+		panic("user.Current is nil")
+	}
+	configFile = path.Join(u.HomeDir, ".fish")
+}
 
 // Config is the Configuration settings.
 type Config struct {
