@@ -1,5 +1,8 @@
 fish
 ----------------
+
+**WARNING: THIS IS DEPRECATED AND ONLY WORKS WITH V1 OF DIGITALOCEAN'S API. YOU MUST DOWNLOAD ONE OF THE RELEASES. MANUALLY BUILDING WILL NOT WORK.**
+
 fish is a Command Line Tool for interacting with DigitalOcean.
 
 In order to use fish you'll need your api key and client id. These
